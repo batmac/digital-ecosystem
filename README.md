@@ -110,13 +110,30 @@ Types disponibles :
 - `mating_season` 💕 - Saison des amours
 - `digital_eclipse` 🌑 - Éclipse mystique
 
-## 🎯 Comment ça Marche
+## 🎯 Comment ça Marche - MODE AUTONOME ⚡
 
-### Cycle de Vie Automatique
-- **Toutes les 6h** : cycle de vieillissement
-- **Sur push/PR** : événements nutritifs  
-- **Issues fermées** : célébrations collectives
-- **Chaque jour** : génération du dashboard
+### Cycle de Vie 100% Automatique
+- **Toutes les 2h** : cycle de vieillissement des créatures
+- **Toutes les 4h** : événements spontanés magiques
+- **40% de chance** de nouvelle naissance à chaque cycle (indépendant de l'activité !)
+- **30% de chance** d'événement mystique spontané
+- **Sur push/PR** : bonus d'énergie pour les créatures existantes
+
+### Écosystème Autonome 🌿
+L'écosystème **vit sa vie tout seul** ! Même si tu ne commites rien pendant des semaines, les créatures vont :
+- Naître spontanément selon un cycle naturel
+- Vieillir et évoluer automatiquement
+- Expérimenter des événements cosmiques aléatoires
+- Se reproduire et former des lignées  
+- Créer leurs propres histoires et aventures
+
+### Mécaniques d'Auto-Régulation
+- **Population limitée** : Moins de spawn si trop de créatures
+- **Événements spontanés** : "Alignements cosmiques", "Vagues d'énergie mystiques"
+- **Cycles naturels** : L'écosystème a ses propres saisons digitales
+- **Évolution organique** : Mutations et adaptations aléatoires
+
+**🎮 TL;DR : Lance une fois, regarde l'écosystème évoluer pour toujours !**
 
 ### Mécaniques de Survie
 - **Santé** basée sur âge + environnement

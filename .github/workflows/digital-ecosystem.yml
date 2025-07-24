@@ -2,7 +2,8 @@
 name: 🌍 Digital Ecosystem
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Toutes les 6h - cycle de vie
+    - cron: '0 */2 * * *'  # Toutes les 2h - cycle de vie autonome
+    - cron: '15 */4 * * *'  # Toutes les 4h décalé - événements spontanés
   push:
     branches: [main]
   pull_request:
@@ -215,9 +216,16 @@ jobs:
           # Met à jour la population
           population["creatures"] = survivors + births
           
-          # Gestion des naissances spontanées (selon l'activité du repo)
-          spawn_chance = 0.1 + (commit_count * 0.05) + (open_issues * 0.02)
-          if random.random() < spawn_chance:
+          # Gestion des naissances spontanées - ÉCOSYSTÈME AUTONOME
+          # Base spawn chance élevée + bonus d'activité
+          base_spawn_chance = 0.4  # 40% de chance de base !
+          activity_bonus = (commit_count * 0.1) + (open_issues * 0.05)
+          population_factor = max(0.1, 1.0 - (len(population["creatures"]) * 0.05))  # Moins de spawn si surpeuplé
+          final_spawn_chance = (base_spawn_chance + activity_bonus) * population_factor
+          
+          print(f"🎲 Spawn chance: {final_spawn_chance:.2f} (base: {base_spawn_chance}, activity: {activity_bonus:.2f}, population factor: {population_factor:.2f})")
+          
+          if random.random() < final_spawn_chance:
               # Choisit une espèce selon la rareté
               rarity_weights = {
                   "common": 0.5,
@@ -249,6 +257,56 @@ jobs:
                   }
                   population["creatures"].append(new_creature)
                   births.append(new_creature)
+          
+          # ÉVÉNEMENTS SPONTANÉS AUTONOMES
+          # Déclenche aléatoirement des événements pour maintenir l'écosystème dynamique
+          if len(population["creatures"]) > 0 and random.random() < 0.3:  # 30% chance d'événement spontané
+              spontaneous_events = [
+                  "A mysterious energy wave sweeps through the repository! ⚡",
+                  "The digital seasons are changing, affecting all creatures 🍂",
+                  "A rare cosmic alignment boosts creature abilities ✨",
+                  "Ancient code fragments emerge, enriching the ecosystem 📜",
+                  "A gentle digital breeze brings new opportunities 🌬️",
+                  "The repository's memory banks overflow with wisdom 🧠",
+                  "Quantum fluctuations create small miracles 🌟"
+              ]
+              
+              event_description = random.choice(spontaneous_events)
+              
+              # Applique des effets aléatoires
+              affected_count = 0
+              for creature in population["creatures"]:
+                  if random.random() < 0.5:  # 50% des créatures affectées
+                      # Effets positifs aléatoires
+                      creature["energy"] = min(100, creature["energy"] + random.randint(5, 15))
+                      creature["health"] = min(100, creature["health"] + random.randint(3, 10))
+                      
+                      spontaneous_activities = [
+                          "felt the cosmic energy and danced under the digital stars",
+                          "discovered a secret passage in the code architecture", 
+                          "experienced a moment of pure digital enlightenment",
+                          "found a hidden treasure in the repository depths",
+                          "connected with the ancient wisdom of the codebase"
+                      ]
+                      creature["recent_event"] = random.choice(spontaneous_activities)
+                      affected_count += 1
+              
+              # Enregistre l'événement spontané
+              spontaneous_event = {
+                  "timestamp": datetime.now().isoformat(),
+                  "type": "spontaneous_event",
+                  "description": event_description,
+                  "affected_creatures": affected_count,
+                  "trigger": "autonomous_ecosystem"
+              }
+              
+              if "events" not in population:
+                  population["events"] = []
+              population["events"].append(spontaneous_event)
+              
+              print(f"🎭 Spontaneous event: {event_description}")
+              print(f"   Affected {affected_count} creatures with positive energy!")
+          
           
           # Sauvegarde l'état
           with open('.ecosystem/population.json', 'w') as f:
