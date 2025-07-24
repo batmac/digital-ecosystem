@@ -1,21 +1,51 @@
 {
-  "timestamp": "2025-07-24T21:39:08.628740",
+  "timestamp": "2025-07-24T22:08:47.101015",
   "population": {
     "creatures": [
       {
         "id": "code_butterfly_1753392858_5357",
         "name": "Wandering Code Butterfly",
         "species": "code_butterfly",
-        "age": 0.8377162651762147,
-        "health": 131.21304991327878,
-        "energy": 86,
+        "age": 2.0877162651762147,
+        "health": 118.07019277042163,
+        "energy": 80,
         "generation": 1,
         "birth_date": "2025-07-24T21:34:18.359036",
-        "recent_event": "found a cozy spot in the tests folder"
+        "recent_event": "felt the cosmic energy and danced under the digital stars"
+      },
+      {
+        "id": "quantum_firefly_1753393678_6656",
+        "name": "Wandering Quantum Firefly",
+        "species": "quantum_firefly",
+        "age": 1.2860004471406756,
+        "health": 113.30285203267799,
+        "energy": 78,
+        "generation": 1,
+        "birth_date": "2025-07-24T21:47:58.891695",
+        "recent_event": "appeared from the digital wilderness!"
+      },
+      {
+        "id": "logic_lynx_1753394863_7694",
+        "name": "Wild Logic Lynx",
+        "species": "logic_lynx",
+        "age": 0.6055736664842177,
+        "health": 92,
+        "energy": 93,
+        "generation": 1,
+        "birth_date": "2025-07-24T22:07:43.637693",
+        "recent_event": "appeared from the digital wilderness!"
       }
     ],
     "generation": 1,
-    "events": []
+    "events": [
+      {
+        "timestamp": "2025-07-24T21:51:51.736426",
+        "type": "spontaneous_event",
+        "description": "Ancient code fragments emerge, enriching the ecosystem \ud83d\udcdc",
+        "affected_creatures": 1,
+        "trigger": "autonomous_ecosystem"
+      }
+    ]
   },
   "species_data": {
     "code_butterfly": {
@@ -106,21 +136,23 @@
   "historical_events": [],
   "family_relationships": {},
   "ecosystem_metrics": {
-    "total_population": 1,
-    "species_diversity": 1,
+    "total_population": 3,
+    "species_diversity": 3,
     "dominant_species": [
       "code_butterfly",
       1
     ],
-    "average_age": 0.84,
-    "average_health": 131.21,
-    "average_energy": 86.0,
-    "oldest_creature_age": 0.8377162651762147,
-    "youngest_creature_age": 0.8377162651762147,
+    "average_age": 1.33,
+    "average_health": 107.79,
+    "average_energy": 83.67,
+    "oldest_creature_age": 2.0877162651762147,
+    "youngest_creature_age": 0.6055736664842177,
     "current_generation": 1,
     "genetic_diversity": 1,
     "species_distribution": {
-      "code_butterfly": 1
+      "code_butterfly": 1,
+      "quantum_firefly": 1,
+      "logic_lynx": 1
     }
   }
 }
