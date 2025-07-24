@@ -1,0 +1,703 @@
+# .github/workflows/ecosystem-dashboard.yml
+name: 📊 Ecosystem Dashboard
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Tous les jours à minuit
+  workflow_dispatch:
+    inputs:
+      dashboard_type:
+        description: 'Dashboard Type'
+        required: true
+        type: choice
+        options:
+        - full_ecosystem
+        - species_analysis  
+        - family_tree
+        - ecosystem_history
+        - creature_interactions
+
+jobs:
+  generate-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Environment
+        run: |
+          mkdir -p .ecosystem/{dashboard,visualizations,analytics}
+          pip install matplotlib seaborn pandas numpy || echo "Visualization packages installation attempted"
+
+      - name: Collect Ecosystem Analytics
+        run: |
+          python3 << 'EOF'
+          import json, os, glob
+          from datetime import datetime, timedelta
+          from collections import defaultdict, Counter
+          
+          # Collecte toutes les données de l'écosystème
+          analytics = {
+              "timestamp": datetime.now().isoformat(),
+              "population": {"creatures": [], "generation": 1, "events": []},
+              "species_data": {},
+              "historical_events": [],
+              "family_relationships": {},
+              "ecosystem_metrics": {}
+          }
+          
+          # Charge les données de base
+          if os.path.exists('.ecosystem/population.json'):
+              with open('.ecosystem/population.json', 'r') as f:
+                  analytics["population"] = json.load(f)
+          
+          if os.path.exists('.ecosystem/species.json'):
+              with open('.ecosystem/species.json', 'r') as f:
+                  analytics["species_data"] = json.load(f)
+          
+          # Collecte l'historique des événements
+          history_files = glob.glob('.ecosystem/history/chronicle_*.md')
+          analytics["historical_events"] = []
+          for file in sorted(history_files)[-10:]:  # 10 derniers événements
+              with open(file, 'r') as f:
+                  content = f.read()
+                  timestamp = os.path.basename(file).replace('chronicle_', '').replace('.md', '')
+                  analytics["historical_events"].append({
+                      "timestamp": timestamp,
+                      "content": content[:500]  # Extrait
+                  })
+          
+          # Analyse des relations familiales
+          family_tree = defaultdict(list)
+          for creature in analytics["population"]["creatures"]:
+              if "parent_id" in creature:
+                  family_tree[creature["parent_id"]].append(creature["id"])
+          analytics["family_relationships"] = dict(family_tree)
+          
+          # Calcul des métriques
+          creatures = analytics["population"]["creatures"]
+          if creatures:
+              species_count = Counter(c["species"] for c in creatures)
+              avg_age = sum(c["age"] for c in creatures) / len(creatures)
+              avg_health = sum(c["health"] for c in creatures) / len(creatures)
+              avg_energy = sum(c["energy"] for c in creatures) / len(creatures)
+              generations = [c.get("generation", 1) for c in creatures]
+              
+              analytics["ecosystem_metrics"] = {
+                  "total_population": len(creatures),
+                  "species_diversity": len(species_count),
+                  "dominant_species": species_count.most_common(1)[0] if species_count else None,
+                  "average_age": round(avg_age, 2),
+                  "average_health": round(avg_health, 2),
+                  "average_energy": round(avg_energy, 2),
+                  "oldest_creature_age": max(c["age"] for c in creatures),
+                  "youngest_creature_age": min(c["age"] for c in creatures),
+                  "current_generation": max(generations),
+                  "genetic_diversity": len(set(generations)),
+                  "species_distribution": dict(species_count)
+              }
+          
+          # Sauvegarde les analytics
+          with open('.ecosystem/analytics/ecosystem_data.json', 'w') as f:
+              json.dump(analytics, f, indent=2)
+          
+          print("📊 Analytics collected successfully!")
+          print(f"   Population: {analytics['ecosystem_metrics'].get('total_population', 0)} creatures")
+          print(f"   Species: {analytics['ecosystem_metrics'].get('species_diversity', 0)} different types")
+          print(f"   Generations: {analytics['ecosystem_metrics'].get('current_generation', 1)} max")
+          
+          EOF
+
+      - name: Generate Interactive Dashboard
+        run: |
+          python3 << 'EOF'
+          import json, os
+          from datetime import datetime
+          
+          with open('.ecosystem/analytics/ecosystem_data.json', 'r') as f:
+              data = json.load(f)
+          
+          metrics = data.get("ecosystem_metrics", {})
+          population = data.get("population", {})
+          species_data = data.get("species_data", {})
+          
+          # Génère un dashboard HTML interactif
+          dashboard_html = f'''
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>🌍 Digital Ecosystem Dashboard</title>
+              <style>
+                  body {{
+                      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      margin: 0;
+                      padding: 20px;
+                      color: white;
+                  }}
+                  .container {{
+                      max-width: 1200px;
+                      margin: 0 auto;
+                      background: rgba(255,255,255,0.1);
+                      backdrop-filter: blur(10px);
+                      border-radius: 20px;
+                      padding: 30px;
+                      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                  }}
+                  .header {{
+                      text-align: center;
+                      margin-bottom: 40px;
+                  }}
+                  .metrics-grid {{
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                      gap: 20px;
+                      margin-bottom: 40px;
+                  }}
+                  .metric-card {{
+                      background: rgba(255,255,255,0.15);
+                      padding: 20px;
+                      border-radius: 15px;
+                      text-align: center;
+                      border: 1px solid rgba(255,255,255,0.2);
+                  }}
+                  .metric-value {{
+                      font-size: 2em;
+                      font-weight: bold;
+                      margin-bottom: 10px;
+                  }}
+                  .creatures-grid {{
+                      display: grid;
+                      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                      gap: 20px;
+                      margin-top: 30px;
+                  }}
+                  .creature-card {{
+                      background: rgba(255,255,255,0.1);
+                      padding: 20px;
+                      border-radius: 15px;
+                      border-left: 5px solid #4CAF50;
+                  }}
+                  .health-bar {{
+                      width: 100%;
+                      height: 8px;
+                      background: rgba(255,255,255,0.3);
+                      border-radius: 4px;
+                      overflow: hidden;
+                      margin: 10px 0;
+                  }}
+                  .health-fill {{
+                      height: 100%;
+                      transition: width 0.3s ease;
+                  }}
+                  .energy-bar {{
+                      width: 100%;
+                      height: 6px;
+                      background: rgba(255,255,255,0.3);
+                      border-radius: 3px;
+                      overflow: hidden;
+                      margin: 5px 0;
+                  }}
+                  .energy-fill {{
+                      height: 100%;
+                      background: linear-gradient(90deg, #FFD700, #FFA500);
+                      transition: width 0.3s ease;
+                  }}
+                  .species-section {{
+                      margin: 30px 0;
+                  }}
+                  .species-list {{
+                      display: flex;
+                      flex-wrap: wrap;
+                      gap: 15px;
+                  }}
+                  .species-badge {{
+                      background: rgba(255,255,255,0.2);
+                      padding: 10px 15px;
+                      border-radius: 25px;
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                  }}
+                  .pulse {{
+                      animation: pulse 2s infinite;
+                  }}
+                  @keyframes pulse {{
+                      0% {{ opacity: 1; }}
+                      50% {{ opacity: 0.7; }}
+                      100% {{ opacity: 1; }}
+                  }}
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      <h1>🌍 Digital Ecosystem Dashboard</h1>
+                      <p>Living creatures inhabiting this repository</p>
+                      <small>Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</small>
+                  </div>
+                  
+                  <div class="metrics-grid">
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('total_population', 0)}</div>
+                          <div>Living Creatures</div>
+                      </div>
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('species_diversity', 0)}</div>
+                          <div>Species Types</div>
+                      </div>
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('current_generation', 1)}</div>
+                          <div>Max Generation</div>
+                      </div>
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('average_health', 0):.0f}%</div>
+                          <div>Avg Health</div>
+                      </div>
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('average_age', 0):.1f}</div>
+                          <div>Average Age (days)</div>
+                      </div>
+                      <div class="metric-card">
+                          <div class="metric-value">{metrics.get('average_energy', 0):.0f}%</div>
+                          <div>Avg Energy</div>
+                      </div>
+                  </div>
+          '''
+          
+          # Section des espèces
+          if metrics.get('species_distribution'):
+              dashboard_html += '''
+                  <div class="species-section">
+                      <h2>🧬 Species Distribution</h2>
+                      <div class="species-list">
+              '''
+              
+              for species_id, count in metrics['species_distribution'].items():
+                  species_info = species_data.get(species_id, {"emoji": "❓", "name": "Unknown Species"})
+                  dashboard_html += f'''
+                      <div class="species-badge">
+                          <span style="font-size: 1.5em;">{species_info['emoji']}</span>
+                          <span>{species_info['name']}: {count}</span>
+                      </div>
+                  '''
+              
+              dashboard_html += '''
+                      </div>
+                  </div>
+              '''
+          
+          # Liste des créatures vivantes
+          if population.get('creatures'):
+              dashboard_html += '''
+                  <div class="species-section">
+                      <h2>👥 Living Creatures</h2>
+                      <div class="creatures-grid">
+              '''
+              
+              for creature in sorted(population['creatures'], key=lambda x: x['age'], reverse=True):
+                  species_info = species_data.get(creature['species'], {"emoji": "❓", "name": "Unknown"})
+                  
+                  health_color = "#4CAF50" if creature['health'] > 70 else "#FF9800" if creature['health'] > 40 else "#F44336"
+                  age_status = "ancient" if creature['age'] > species_info.get('base_lifespan', 30) * 0.7 else "adult" if creature['age'] > species_info.get('base_lifespan', 30) * 0.3 else "young"
+                  
+                  recent_event = creature.get('recent_event', 'is living peacefully')
+                  
+                  dashboard_html += f'''
+                      <div class="creature-card {'pulse' if creature['health'] < 30 else ''}">
+                          <h3>{species_info['emoji']} {creature['name']}</h3>
+                          <p><strong>Species:</strong> {species_info['name']}</p>
+                          <p><strong>Age:</strong> {creature['age']:.1f} days ({age_status})</p>
+                          <p><strong>Generation:</strong> {creature.get('generation', 1)}</p>
+                          
+                          <div>
+                              <small>Health: {creature['health']:.0f}%</small>
+                              <div class="health-bar">
+                                  <div class="health-fill" style="width: {creature['health']}%; background: {health_color};"></div>
+                              </div>
+                          </div>
+                          
+                          <div>
+                              <small>Energy: {creature['energy']:.0f}%</small>
+                              <div class="energy-bar">
+                                  <div class="energy-fill" style="width: {creature['energy']}%;"></div>
+                              </div>
+                          </div>
+                          
+                          <p style="font-style: italic; margin-top: 15px; opacity: 0.9;">
+                              Recently {recent_event}
+                          </p>
+                      </div>
+                  '''
+              
+              dashboard_html += '''
+                      </div>
+                  </div>
+              '''
+          
+          # Footer
+          dashboard_html += '''
+                  <div style="text-align: center; margin-top: 40px; opacity: 0.8;">
+                      <p>🌱 This ecosystem evolves based on your repository activity!</p>
+                      <p>More commits, PRs, and interactions create a more vibrant digital world.</p>
+                  </div>
+              </div>
+              
+              <script>
+                  // Ajoute un peu d'interactivité
+                  document.addEventListener('DOMContentLoaded', function() {
+                      const cards = document.querySelectorAll('.creature-card, .metric-card');
+                      cards.forEach(card => {
+                          card.addEventListener('mouseenter', function() {
+                              this.style.transform = 'translateY(-5px)';
+                              this.style.transition = 'transform 0.3s ease';
+                          });
+                          card.addEventListener('mouseleave', function() {
+                              this.style.transform = 'translateY(0)';
+                          });
+                      });
+                  });
+              </script>
+          </body>
+          </html>
+          '''
+          
+          # Sauvegarde le dashboard
+          with open('.ecosystem/dashboard/index.html', 'w') as f:
+              f.write(dashboard_html)
+          
+          print("🎨 Interactive dashboard generated!")
+          print("   📁 File: .ecosystem/dashboard/index.html")
+          
+          EOF
+
+      - name: Generate Family Tree Visualization
+        run: |
+          python3 << 'EOF'
+          import json, os
+          from collections import defaultdict
+          
+          with open('.ecosystem/analytics/ecosystem_data.json', 'r') as f:
+              data = json.load(f)
+          
+          population = data.get("population", {})
+          species_data = data.get("species_data", {})
+          family_tree = data.get("family_relationships", {})
+          
+          # Génère un arbre généalogique en format DOT (Graphviz)
+          dot_content = '''
+          digraph EcosystemFamilyTree {
+              rankdir=TB;
+              node [shape=box, style="rounded,filled", fontname="Arial"];
+              edge [fontname="Arial"];
+              
+              // Style pour différentes générations
+              node [fillcolor="#E3F2FD"];
+          '''
+          
+          creatures_by_id = {c["id"]: c for c in population.get("creatures", [])}
+          
+          # Ajoute les nœuds (créatures)
+          for creature in population.get("creatures", []):
+              species_info = species_data.get(creature["species"], {"emoji": "❓", "name": "Unknown"})
+              generation = creature.get("generation", 1)
+              
+              # Couleur selon la génération
+              colors = ["#FFCDD2", "#F8BBD9", "#E1BEE7", "#D1C4E9", "#C5CAE9", "#BBDEFB"]
+              color = colors[min(generation - 1, len(colors) - 1)]
+              
+              # Style selon la santé
+              border_color = "#4CAF50" if creature["health"] > 70 else "#FF9800" if creature["health"] > 40 else "#F44336"
+              
+              dot_content += f'''
+                  "{creature['id']}" [
+                      label="{species_info['emoji']} {creature['name']}\\nGen {generation}\\nAge: {creature['age']:.1f}d",
+                      fillcolor="{color}",
+                      color="{border_color}",
+                      penwidth=2
+                  ];
+              '''
+          
+          # Ajoute les relations parent-enfant
+          for parent_id, children in family_tree.items():
+              if parent_id in creatures_by_id:
+                  for child_id in children:
+                      if child_id in creatures_by_id:
+                          dot_content += f'    "{parent_id}" -> "{child_id}" [label="parent of"];\\n'
+          
+          dot_content += '''
+              
+              // Légende
+              subgraph cluster_legend {
+                  label="Legend";
+                  style="rounded,filled";
+                  fillcolor="#F5F5F5";
+                  
+                  legend1 [label="🟢 Healthy (70%+)", fillcolor="#4CAF50", color="#4CAF50"];
+                  legend2 [label="🟡 Warning (40-70%)", fillcolor="#FF9800", color="#FF9800"];
+                  legend3 [label="🔴 Critical (<40%)", fillcolor="#F44336", color="#F44336"];
+                  
+                  legend1 -> legend2 -> legend3 [style=invis];
+              }
+          }
+          '''
+          
+          with open('.ecosystem/visualizations/family_tree.dot', 'w') as f:
+              f.write(dot_content)
+          
+          # Génère aussi un format texte simple
+          family_text = "# 🌳 Digital Ecosystem Family Tree\\n\\n"
+          
+          # Trouve les ancêtres (créatures sans parents)
+          ancestors = []
+          for creature in population.get("creatures", []):
+              if "parent_id" not in creature or creature["parent_id"] not in creatures_by_id:
+                  ancestors.append(creature)
+          
+          def print_family_branch(creature, depth=0, visited=None):
+              if visited is None:
+                  visited = set()
+              
+              if creature["id"] in visited:
+                  return ""
+              visited.add(creature["id"])
+              
+              species_info = species_data.get(creature["species"], {"emoji": "❓", "name": "Unknown"})
+              indent = "  " * depth
+              branch = f"{indent}{'└─ ' if depth > 0 else ''}{species_info['emoji']} {creature['name']} (Gen {creature.get('generation', 1)}, {creature['age']:.1f}d old)\\n"
+              
+              # Ajoute les enfants
+              children_ids = family_tree.get(creature["id"], [])
+              children = [creatures_by_id[cid] for cid in children_ids if cid in creatures_by_id]
+              
+              for child in sorted(children, key=lambda x: x["age"], reverse=True):
+                  branch += print_family_branch(child, depth + 1, visited)
+              
+              return branch
+          
+          for ancestor in sorted(ancestors, key=lambda x: x.get("generation", 1)):
+              family_text += print_family_branch(ancestor)
+              family_text += "\\n"
+          
+          if not ancestors:
+              family_text += "*No family relationships established yet.*\\n"
+          
+          with open('.ecosystem/visualizations/family_tree.md', 'w') as f:
+              f.write(family_text)
+          
+          print("🌳 Family tree visualization generated!")
+          print(f"   DOT file: .ecosystem/visualizations/family_tree.dot")
+          print(f"   Text file: .ecosystem/visualizations/family_tree.md")
+          
+          EOF
+
+      - name: Create Ecosystem Timeline
+        run: |
+          python3 << 'EOF'
+          import json, os, glob
+          from datetime import datetime
+          
+          # Collecte tous les événements historiques
+          events = []
+          
+          # Événements des chroniques
+          history_files = glob.glob('.ecosystem/history/chronicle_*.md')
+          for file in sorted(history_files):
+              timestamp_str = os.path.basename(file).replace('chronicle_', '').replace('.md', '')
+              try:
+                  # Parse le timestamp
+                  timestamp = datetime.strptime(timestamp_str, '%Y%m%d_%H%M%S')
+                  
+                  with open(file, 'r') as f:
+                      content = f.read()
+                  
+                  # Extrait le type d'événement du contenu
+                  lines = content.split('\\n')
+                  event_type = "Unknown Event"
+                  for line in lines:
+                      if line.startswith('**Event**:'):
+                          event_type = line.replace('**Event**:', '').strip()
+                          break
+                  
+                  events.append({
+                      "timestamp": timestamp.isoformat(),
+                      "type": event_type,
+                      "description": content[:200] + "..." if len(content) > 200 else content
+                  })
+              except ValueError:
+                  continue
+          
+          # Événements de la population actuelle
+          if os.path.exists('.ecosystem/population.json'):
+              with open('.ecosystem/population.json', 'r') as f:
+                  population = json.load(f)
+              
+              for event in population.get("events", [])[-20:]:  # 20 derniers événements
+                  events.append({
+                      "timestamp": event["timestamp"],
+                      "type": event["type"],
+                      "description": event["description"],
+                      "affected": event.get("affected_creatures", 0)
+                  })
+          
+          # Trie par timestamp
+          events.sort(key=lambda x: x["timestamp"])
+          
+          # Génère la timeline HTML
+          timeline_html = f'''
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>📅 Ecosystem Timeline</title>
+              <style>
+                  body {{
+                      font-family: Arial, sans-serif;
+                      background: #f0f2f5;
+                      margin: 0;
+                      padding: 20px;
+                  }}
+                  .timeline-container {{
+                      max-width: 800px;
+                      margin: 0 auto;
+                      position: relative;
+                  }}
+                  .timeline {{
+                      position: relative;
+                      padding-left: 30px;
+                  }}
+                  .timeline::before {{
+                      content: '';
+                      position: absolute;
+                      left: 15px;
+                      top: 0;
+                      bottom: 0;
+                      width: 2px;
+                      background: #e0e0e0;
+                  }}
+                  .timeline-item {{
+                      position: relative;
+                      margin-bottom: 30px;
+                      background: white;
+                      padding: 20px;
+                      border-radius: 10px;
+                      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                  }}
+                  .timeline-item::before {{
+                      content: '';
+                      position: absolute;
+                      left: -37px;
+                      top: 20px;
+                      width: 12px;
+                      height: 12px;
+                      border-radius: 50%;
+                      background: #2196F3;
+                      border: 3px solid white;
+                  }}
+                  .event-date {{
+                      color: #666;
+                      font-size: 0.9em;
+                      margin-bottom: 10px;
+                  }}
+                  .event-type {{
+                      font-weight: bold;
+                      color: #2196F3;
+                      margin-bottom: 10px;
+                  }}
+                  .event-description {{
+                      line-height: 1.6;
+                  }}
+                  .event-meta {{
+                      margin-top: 10px;
+                      padding-top: 10px;
+                      border-top: 1px solid #eee;
+                      font-size: 0.9em;
+                      color: #666;
+                  }}
+                  h1 {{
+                      text-align: center;
+                      color: #333;
+                      margin-bottom: 40px;
+                  }}
+              </style>
+          </head>
+          <body>
+              <div class="timeline-container">
+                  <h1>📅 Digital Ecosystem Timeline</h1>
+                  <div class="timeline">
+          '''
+          
+          for event in events[-50:]:  # 50 derniers événements
+              try:
+                  event_date = datetime.fromisoformat(event["timestamp"].replace('Z', '+00:00'))
+                  formatted_date = event_date.strftime('%Y-%m-%d %H:%M')
+              except:
+                  formatted_date = event["timestamp"]
+              
+              timeline_html += f'''
+                      <div class="timeline-item">
+                          <div class="event-date">{formatted_date}</div>
+                          <div class="event-type">{event["type"].replace('_', ' ').title()}</div>
+                          <div class="event-description">{event["description"]}</div>
+              '''
+              
+              if "affected" in event:
+                  timeline_html += f'<div class="event-meta">Affected {event["affected"]} creatures</div>'
+              
+              timeline_html += '</div>'
+          
+          timeline_html += '''
+                  </div>
+              </div>
+          </body>
+          </html>
+          '''
+          
+          with open('.ecosystem/dashboard/timeline.html', 'w') as f:
+              f.write(timeline_html)
+          
+          print("📅 Ecosystem timeline generated!")
+          print(f"   Events processed: {len(events)}")
+          
+          EOF
+
+      - name: Commit Dashboard Updates
+        run: |
+          git config user.name "Ecosystem Dashboard Bot"
+          git config user.email "dashboard@digital-ecosystem.local"
+          
+          git add .ecosystem/
+          
+          git commit -m "📊 Updated ecosystem dashboard and visualizations" || echo "No changes to commit"
+          git push || echo "Push failed, but dashboard is ready"
+
+      - name: Dashboard Summary
+        run: |
+          echo "📊 Ecosystem Dashboard Generated!"
+          echo "================================"
+          echo ""
+          echo "🌐 Interactive Dashboard: .ecosystem/dashboard/index.html"
+          echo "📅 Timeline View: .ecosystem/dashboard/timeline.html"  
+          echo "🌳 Family Tree: .ecosystem/visualizations/family_tree.md"
+          echo "📈 Analytics Data: .ecosystem/analytics/ecosystem_data.json"
+          echo ""
+          echo "To view the dashboard locally:"
+          echo "  python3 -m http.server 8000"
+          echo "  Open: http://localhost:8000/.ecosystem/dashboard/"
+          echo ""
+          if [[ -f ".ecosystem/analytics/ecosystem_data.json" ]]; then
+              echo "📊 Current Stats:"
+              python3 -c "
+              import json
+              with open('.ecosystem/analytics/ecosystem_data.json', 'r') as f:
+                  data = json.load(f)
+              metrics = data.get('ecosystem_metrics', {})
+              print(f\"   🌍 Population: {metrics.get('total_population', 0)} creatures\")
+              print(f\"   🧬 Species: {metrics.get('species_diversity', 0)} types\")
+              print(f\"   🏆 Max Generation: {metrics.get('current_generation', 1)}\")
+              print(f\"   💚 Avg Health: {metrics.get('average_health', 0):.0f}%\")
+              "
+          fi

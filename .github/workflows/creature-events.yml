@@ -1,0 +1,387 @@
+# .github/workflows/creature-events.yml
+name: 🎭 Creature Events & Interactions
+on:
+  issues:
+    types: [opened, closed, commented]
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, merged]
+  workflow_dispatch:
+    inputs:
+      event_type:
+        description: 'Special Event Type'
+        required: true
+        type: choice
+        options:
+        - natural_disaster
+        - golden_age
+        - migration_season
+        - mating_season
+        - food_abundance
+        - digital_eclipse
+
+jobs:
+  handle-ecosystem-events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Analyze Repository Event
+        run: |
+          echo "EVENT_CONTEXT=${{ github.event_name }}" >> $GITHUB_ENV
+          echo "TRIGGER_TYPE=${{ github.event.action }}" >> $GITHUB_ENV
+          
+          # Détermine l'impact sur l'écosystème
+          case "${{ github.event_name }}" in
+            "push")
+              echo "ECOSYSTEM_IMPACT=code_nourishment" >> $GITHUB_ENV
+              echo "IMPACT_STRENGTH=medium" >> $GITHUB_ENV
+              ;;
+            "pull_request")
+              if [[ "${{ github.event.action }}" == "merged" ]]; then
+                echo "ECOSYSTEM_IMPACT=evolution_boost" >> $GITHUB_ENV
+                echo "IMPACT_STRENGTH=high" >> $GITHUB_ENV
+              else
+                echo "ECOSYSTEM_IMPACT=change_adaptation" >> $GITHUB_ENV
+                echo "IMPACT_STRENGTH=low" >> $GITHUB_ENV
+              fi
+              ;;
+            "issues")
+              if [[ "${{ github.event.action }}" == "opened" ]]; then
+                echo "ECOSYSTEM_IMPACT=problem_alert" >> $GITHUB_ENV
+                echo "IMPACT_STRENGTH=medium" >> $GITHUB_ENV
+              elif [[ "${{ github.event.action }}" == "closed" ]]; then
+                echo "ECOSYSTEM_IMPACT=resolution_celebration" >> $GITHUB_ENV
+                echo "IMPACT_STRENGTH=high" >> $GITHUB_ENV
+              fi
+              ;;
+            "workflow_dispatch")
+              echo "ECOSYSTEM_IMPACT=${{ github.event.inputs.event_type }}" >> $GITHUB_ENV
+              echo "IMPACT_STRENGTH=extreme" >> $GITHUB_ENV
+              ;;
+          esac
+
+      - name: Load Ecosystem State
+        run: |
+          mkdir -p .ecosystem/{events,genetics,history}
+          
+          # Initialise si nécessaire
+          if [[ ! -f ".ecosystem/population.json" ]]; then
+            echo '{"creatures": [], "generation": 1, "events": []}' > .ecosystem/population.json
+          fi
+
+      - name: Process Ecosystem Event
+        run: |
+          python3 << 'EOF'
+          import json, random, time, os
+          from datetime import datetime, timedelta
+          
+          # Charge l'état actuel
+          with open('.ecosystem/population.json', 'r') as f:
+              population = json.load(f)
+          
+          if os.path.exists('.ecosystem/species.json'):
+              with open('.ecosystem/species.json', 'r') as f:
+                  species_data = json.load(f)
+          else:
+              # Fallback species data
+              species_data = {
+                  "code_butterfly": {"emoji": "🦋", "name": "Code Butterfly", "base_lifespan": 14},
+                  "bug_hunter_spider": {"emoji": "🕷️", "name": "Bug Hunter Spider", "base_lifespan": 21}
+              }
+          
+          impact = os.environ.get('ECOSYSTEM_IMPACT', 'neutral')
+          strength = os.environ.get('IMPACT_STRENGTH', 'low')
+          
+          # Définit les effets selon l'événement
+          event_effects = {
+              "code_nourishment": {
+                  "energy_boost": 15,
+                  "health_boost": 10,
+                  "description": "Fresh code has nourished the ecosystem! 🌱"
+              },
+              "evolution_boost": {
+                  "energy_boost": 25,
+                  "health_boost": 20,
+                  "reproduction_boost": 0.3,
+                  "description": "A successful merge has strengthened the digital DNA! 🧬"
+              },
+              "problem_alert": {
+                  "energy_drain": 5,
+                  "alertness_boost": 20,
+                  "description": "Creatures are on high alert due to detected issues! ⚠️"
+              },
+              "resolution_celebration": {
+                  "energy_boost": 30,
+                  "health_boost": 15,
+                  "happiness_boost": 25,
+                  "description": "The ecosystem celebrates problem resolution! 🎉"
+              },
+              "natural_disaster": {
+                  "energy_drain": 40,
+                  "health_drain": 30,
+                  "survival_instinct": True,
+                  "description": "⚡ A digital storm sweeps through the repository!"
+              },
+              "golden_age": {
+                  "energy_boost": 50,
+                  "health_boost": 40,
+                  "reproduction_boost": 0.8,
+                  "lifespan_boost": 1.5,
+                  "description": "✨ A golden age of prosperity begins!"
+              },
+              "migration_season": {
+                  "movement_boost": True,
+                  "social_interaction": 0.6,
+                  "description": "🦅 Migration season brings new connections!"
+              },
+              "mating_season": {
+                  "reproduction_boost": 1.2,
+                  "energy_boost": 20,
+                  "social_behavior": True,
+                  "description": "💕 Love is in the digital air!"
+              },
+              "digital_eclipse": {
+                  "mystical_energy": True,
+                  "mutation_chance": 0.1,
+                  "rare_spawn": True,
+                  "description": "🌑 A rare digital eclipse brings mystical changes!"
+              }
+          }
+          
+          current_effect = event_effects.get(impact, {"description": "The ecosystem remains stable."})
+          
+          # Applique les effets aux créatures
+          affected_creatures = []
+          for creature in population["creatures"]:
+              original_health = creature["health"]
+              original_energy = creature["energy"]
+              
+              # Applique les boosts/drains
+              if "energy_boost" in current_effect:
+                  creature["energy"] = min(100, creature["energy"] + current_effect["energy_boost"])
+              if "energy_drain" in current_effect:
+                  creature["energy"] = max(0, creature["energy"] - current_effect["energy_drain"])
+              if "health_boost" in current_effect:
+                  creature["health"] = min(100, creature["health"] + current_effect["health_boost"])
+              if "health_drain" in current_effect:
+                  creature["health"] = max(0, creature["health"] - current_effect["health_drain"])
+              
+              # Événements spéciaux
+              special_events = []
+              
+              if current_effect.get("mystical_energy") and random.random() < 0.2:
+                  special_events.append("was touched by mystical energy and glows softly ✨")
+              
+              if current_effect.get("survival_instinct") and creature["health"] < 50:
+                  creature["health"] += 20  # Instinct de survie
+                  special_events.append("activated survival instincts! 💪")
+              
+              if current_effect.get("mutation_chance", 0) > random.random():
+                  mutations = ["developed iridescent scales", "grew an extra antenna", "learned to phase through walls", "gained night vision"]
+                  special_events.append(f"underwent a beneficial mutation: {random.choice(mutations)} 🧬")
+              
+              # Interactions sociales
+              if current_effect.get("social_interaction", 0) > random.random():
+                  other_creatures = [c for c in population["creatures"] if c["id"] != creature["id"]]
+                  if other_creatures:
+                      friend = random.choice(other_creatures)
+                      special_events.append(f"bonded with {friend['name']} 👫")
+              
+              # Enregistre les événements spéciaux
+              if special_events:
+                  creature["recent_event"] = random.choice(special_events)
+              
+              # Marque comme affecté si changement significatif
+              if (abs(creature["health"] - original_health) > 5 or 
+                  abs(creature["energy"] - original_energy) > 5 or 
+                  special_events):
+                  affected_creatures.append(creature["name"])
+          
+          # Gestion des naissances spéciales
+          special_births = []
+          if current_effect.get("rare_spawn") and random.random() < 0.3:
+              # Spawn créature mystique
+              mystical_species = [s for s, data in species_data.items() if data.get("rarity") == "mystical"]
+              if mystical_species:
+                  chosen = random.choice(mystical_species)
+                  species_info = species_data[chosen]
+                  
+                  mystical_creature = {
+                      "id": f"{chosen}_eclipse_{int(time.time())}",
+                      "name": f"Eclipse-born {species_info['name']}",
+                      "species": chosen,
+                      "age": 0,
+                      "health": 100,
+                      "energy": 100,
+                      "generation": 1,
+                      "birth_date": datetime.now().isoformat(),
+                      "special_origin": "digital_eclipse",
+                      "recent_event": "emerged from the eclipse's mystical energy! 🌟"
+                  }
+                  population["creatures"].append(mystical_creature)
+                  special_births.append(mystical_creature["name"])
+          
+          # Enregistre l'événement dans l'historique
+          event_record = {
+              "timestamp": datetime.now().isoformat(),
+              "type": impact,  
+              "strength": strength,
+              "description": current_effect["description"],
+              "affected_creatures": len(affected_creatures),
+              "special_births": len(special_births),
+              "trigger": f"{os.environ.get('EVENT_CONTEXT', 'unknown')}:{os.environ.get('TRIGGER_TYPE', 'unknown')}"
+          }
+          
+          if "events" not in population:
+              population["events"] = []
+          population["events"].append(event_record)
+          
+          # Garde seulement les 50 derniers événements
+          population["events"] = population["events"][-50:]
+          
+          # Sauvegarde
+          with open('.ecosystem/population.json', 'w') as f:
+              json.dump(population, f, indent=2)
+              
+          # Rapport de l'événement
+          print(f"🎭 Ecosystem Event Processed:")
+          print(f"   Type: {impact} ({strength} intensity)")
+          print(f"   Description: {current_effect['description']}")
+          print(f"   Affected creatures: {len(affected_creatures)}")
+          if affected_creatures:
+              print(f"   Names: {', '.join(affected_creatures[:5])}")
+          if special_births:
+              print(f"   Special births: {', '.join(special_births)}")
+          
+          # Crée un fichier de résumé pour la suite
+          event_summary = {
+              "type": impact,
+              "description": current_effect["description"],
+              "affected_count": len(affected_creatures),
+              "special_births": special_births,
+              "notable_creatures": affected_creatures[:3]
+          }
+          
+          with open('.ecosystem/last_event.json', 'w') as f:
+              json.dump(event_summary, f, indent=2)
+          
+          EOF
+
+      - name: Create Event Chronicle
+        run: |
+          python3 << 'EOF'
+          import json, os
+          from datetime import datetime
+          
+          if os.path.exists('.ecosystem/last_event.json'):
+              with open('.ecosystem/last_event.json', 'r') as f:
+                  event = json.load(f)
+              
+              # Génère une chronique narrative
+              chronicle_text = f"""# 📜 Digital Chronicle Entry
+          
+          **Date**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+          **Event**: {event['type'].replace('_', ' ').title()}
+          
+          ## 📖 What Happened
+          {event['description']}
+          
+          """
+              
+              if event['affected_count'] > 0:
+                  chronicle_text += f"## 🎭 Impact on the Ecosystem\n"
+                  chronicle_text += f"- **{event['affected_count']} creatures** were affected by this event\n"
+                  
+                  if event['notable_creatures']:
+                      chronicle_text += f"- **Notable participants**: {', '.join(event['notable_creatures'])}\n"
+              
+              if event['special_births']:
+                  chronicle_text += f"\n## 🌟 Special Births\n"
+                  for birth in event['special_births']:
+                      chronicle_text += f"- {birth} entered the world under special circumstances!\n"
+              
+              chronicle_text += f"""
+          ## 🔗 Repository Context
+          This event was triggered by repository activity: `{os.environ.get('EVENT_CONTEXT', 'unknown')}` 
+          
+          *The digital ecosystem responds to and evolves with your development activities!*
+          """
+              
+              # Sauvegarde la chronique
+              timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+              with open(f'.ecosystem/history/chronicle_{timestamp}.md', 'w') as f:
+                  f.write(chronicle_text)
+              
+              print("📜 Event chronicle created!")
+              print(chronicle_text[:500] + "..." if len(chronicle_text) > 500 else chronicle_text)
+          
+          EOF
+
+      - name: Update Creature Issues  
+        if: github.event_name == 'issues' && github.event.action == 'closed'
+        run: |
+          # Si une issue creature est fermée, la créature "évolue"
+          python3 << 'EOF'
+          import json, subprocess, os, random
+          
+          issue_title = "${{ github.event.issue.title }}"
+          
+          # Vérifie si c'est une issue de créature
+          if "Living Creature" in issue_title:
+              print(f"🎭 A creature issue was closed: {issue_title}")
+              
+              # La créature gagne de l'expérience
+              with open('.ecosystem/population.json', 'r') as f:
+                  population = json.load(f)
+              
+              for creature in population["creatures"]:
+                  if creature["name"] in issue_title:
+                      # Boost pour avoir "résolu" son issue
+                      creature["energy"] = min(100, creature["energy"] + 30)
+                      creature["health"] = min(100, creature["health"] + 20) 
+                      creature["recent_event"] = "evolved through community interaction! 🎓"
+                      
+                      print(f"✨ {creature['name']} gained experience from issue resolution!")
+                      break
+              
+              # Sauvegarde
+              with open('.ecosystem/population.json', 'w') as f:
+                  json.dump(population, f, indent=2)
+          
+          EOF
+
+      - name: Commit Event Changes
+        run: |
+          git config user.name "Ecosystem Events Bot"
+          git config user.email "events@digital-ecosystem.local"
+          
+          git add .ecosystem/
+          
+          if [[ -f ".ecosystem/last_event.json" ]]; then
+              event_desc=$(python3 -c "
+              import json
+              with open('.ecosystem/last_event.json', 'r') as f:
+                  event = json.load(f)
+              print(event['type'].replace('_', ' ').title())
+              ")
+              
+              git commit -m "🎭 Ecosystem event: $event_desc" || echo "No changes"
+              git push || echo "Push failed"
+          fi
+
+      - name: Event Summary
+        run: |
+          echo "🎭 Ecosystem Event Summary:"
+          echo "========================="
+          echo "Event: $ECOSYSTEM_IMPACT"
+          echo "Intensity: $IMPACT_STRENGTH"  
+          echo "Triggered by: $EVENT_CONTEXT ($TRIGGER_TYPE)"
+          echo ""
+          if [[ -f ".ecosystem/last_event.json" ]]; then
+              echo "Details:"
+              cat .ecosystem/last_event.json | python3 -m json.tool
+          fi

@@ -1,0 +1,482 @@
+# .github/workflows/digital-ecosystem.yml
+name: 🌍 Digital Ecosystem
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Toutes les 6h - cycle de vie
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, closed]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Ecosystem Action'
+        required: true
+        default: 'daily_cycle'
+        type: choice
+        options:
+        - daily_cycle
+        - spawn_creature
+        - ecosystem_report
+        - emergency_event
+
+jobs:
+  ecosystem-manager:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Ecosystem
+        run: |
+          # Crée la structure de l'écosystème
+          mkdir -p .ecosystem/{creatures,events,history,genetics}
+          
+          # Base de données des espèces
+          cat > .ecosystem/species.json << 'EOF'
+          {
+            "code_butterfly": {
+              "emoji": "🦋",
+              "name": "Code Butterfly",
+              "base_lifespan": 14,
+              "traits": ["pollinates", "migrates", "colorful"],
+              "diet": "nectar_commits",
+              "reproduction": "metamorphosis",
+              "rarity": "common",
+              "size": "small"
+            },
+            "bug_hunter_spider": {
+              "emoji": "🕷️", 
+              "name": "Bug Hunter Spider",
+              "base_lifespan": 21,
+              "traits": ["patient", "trap_builder", "nocturnal"],
+              "diet": "bugs_issues",
+              "reproduction": "web_eggs",
+              "rarity": "common",
+              "size": "small"
+            },
+            "data_dragon": {
+              "emoji": "🐉",
+              "name": "Data Dragon",
+              "base_lifespan": 90,
+              "traits": ["hoards_data", "fire_breath", "ancient_wisdom"],
+              "diet": "databases",
+              "reproduction": "golden_eggs",
+              "rarity": "legendary",
+              "size": "large"
+            },
+            "logic_lynx": {
+              "emoji": "🐱",
+              "name": "Logic Lynx", 
+              "base_lifespan": 42,
+              "traits": ["stealth", "pattern_recognition", "agile"],
+              "diet": "edge_cases",
+              "reproduction": "litter",
+              "rarity": "uncommon",
+              "size": "medium"
+            },
+            "memory_whale": {
+              "emoji": "🐋",
+              "name": "Memory Whale",
+              "base_lifespan": 120,
+              "traits": ["deep_storage", "migration", "ancient_knowledge"],
+              "diet": "legacy_code",
+              "reproduction": "song_ritual",
+              "rarity": "rare",
+              "size": "huge"
+            },
+            "quantum_firefly": {
+              "emoji": "✨",
+              "name": "Quantum Firefly",
+              "base_lifespan": 7,
+              "traits": ["bioluminescent", "quantum_tunneling", "ephemeral"],
+              "diet": "photons",
+              "reproduction": "light_burst",
+              "rarity": "mystical",
+              "size": "tiny"
+            }
+          }
+          EOF
+
+      - name: Load Current Ecosystem State
+        run: |
+          python3 << 'EOF'
+          import json, os, random, time
+          from datetime import datetime, timedelta
+          
+          # Charge l'état actuel ou initialise
+          if os.path.exists('.ecosystem/population.json'):
+              with open('.ecosystem/population.json', 'r') as f:
+                  population = json.load(f)
+          else:
+              population = {"creatures": [], "generation": 1, "events": []}
+          
+          # Charge les espèces
+          with open('.ecosystem/species.json', 'r') as f:
+              species_data = json.load(f)
+          
+          # Statistiques du repo pour influencer l'écosystème
+          import subprocess
+          
+          # Compte les commits récents
+          try:
+              recent_commits = subprocess.check_output([
+                  'git', 'log', '--since=24 hours ago', '--oneline'
+              ]).decode().strip().split('\n')
+              commit_count = len([c for c in recent_commits if c.strip()])
+          except:
+              commit_count = 0
+          
+          # Compte les issues ouvertes
+          try:
+              issues_result = subprocess.run([
+                  'gh', 'issue', 'list', '--state=open', '--json=number'
+              ], capture_output=True, text=True, env=dict(os.environ, GH_TOKEN='${{ secrets.GITHUB_TOKEN }}'))
+              if issues_result.returncode == 0:
+                  issues = json.loads(issues_result.stdout)
+                  open_issues = len(issues)
+              else:
+                  open_issues = 0
+          except:
+              open_issues = 0
+          
+          print(f"📊 Ecosystem Stats: {commit_count} recent commits, {open_issues} open issues")
+          
+          # Sauvegarde les stats environnementales
+          env_stats = {
+              "timestamp": datetime.now().isoformat(),
+              "commits": commit_count,
+              "issues": open_issues,
+              "activity_level": "high" if commit_count > 5 else "medium" if commit_count > 0 else "low"
+          }
+          
+          with open('.ecosystem/environment.json', 'w') as f:
+              json.dump(env_stats, f, indent=2)
+          
+          # Fonction de cycle de vie
+          def age_creatures(population):
+              surviving_creatures = []
+              deaths = []
+              births = []
+              
+              for creature in population["creatures"]:
+                  creature["age"] += 0.25  # Vieillit de 6h
+                  creature["energy"] = max(0, creature["energy"] - random.randint(1, 3))
+                  
+                  # Calcule la santé basée sur l'âge et l'environnement
+                  max_age = species_data[creature["species"]]["base_lifespan"]
+                  age_factor = creature["age"] / max_age
+                  health = max(0, 100 - (age_factor * 80) - (50 - creature["energy"]))
+                  creature["health"] = health
+                  
+                  # Événements de vie aléatoires
+                  if random.random() < 0.1:  # 10% chance d'événement
+                      events = [
+                          f"discovered a hidden {random.choice(['cache', 'treasure', 'bug', 'feature'])}",
+                          f"made friends with a {random.choice(list(species_data.keys())).replace('_', ' ')}",
+                          f"learned a new {random.choice(['trick', 'pattern', 'algorithm', 'song'])}",
+                          f"found a cozy spot in the {random.choice(['README', 'config', 'tests', 'docs'])} folder"
+                      ]
+                      creature["recent_event"] = random.choice(events)
+                  
+                  # Survie ou mort
+                  if health > 0 and creature["age"] < max_age:
+                      surviving_creatures.append(creature)
+                      
+                      # Reproduction (si en bonne santé et âge adulte)
+                      if (health > 70 and 
+                          creature["age"] > max_age * 0.3 and 
+                          creature["age"] < max_age * 0.8 and
+                          random.random() < 0.05):  # 5% chance
+                          
+                          # Crée un bébé
+                          baby = {
+                              "id": f"{creature['species']}_{int(time.time())}_{random.randint(1000,9999)}",
+                              "name": f"{random.choice(['Little', 'Baby', 'Young', 'Mini'])} {creature['name']}",
+                              "species": creature["species"],
+                              "age": 0,
+                              "health": 100,
+                              "energy": 100,
+                              "parent_id": creature["id"],
+                              "generation": creature.get("generation", 1) + 1,
+                              "birth_date": datetime.now().isoformat(),
+                              "recent_event": "was just born! 👶"
+                          }
+                          births.append(baby)
+                  else:
+                      deaths.append(creature)
+              
+              return surviving_creatures, deaths, births
+          
+          # Exécute le cycle de vie
+          survivors, deaths, births = age_creatures(population)
+          
+          # Met à jour la population
+          population["creatures"] = survivors + births
+          
+          # Gestion des naissances spontanées (selon l'activité du repo)
+          spawn_chance = 0.1 + (commit_count * 0.05) + (open_issues * 0.02)
+          if random.random() < spawn_chance:
+              # Choisit une espèce selon la rareté
+              rarity_weights = {
+                  "common": 0.5,
+                  "uncommon": 0.25, 
+                  "rare": 0.15,
+                  "legendary": 0.08,
+                  "mystical": 0.02
+              }
+              
+              available_species = []
+              for species_id, data in species_data.items():
+                  weight = rarity_weights.get(data["rarity"], 0.1)
+                  available_species.extend([species_id] * int(weight * 100))
+              
+              if available_species:
+                  chosen_species = random.choice(available_species)
+                  species_info = species_data[chosen_species]
+                  
+                  new_creature = {
+                      "id": f"{chosen_species}_{int(time.time())}_{random.randint(1000,9999)}",
+                      "name": f"{random.choice(['Wild', 'Mysterious', 'Wandering', 'Ancient'])} {species_info['name']}",
+                      "species": chosen_species,
+                      "age": random.uniform(0, species_info["base_lifespan"] * 0.1),
+                      "health": random.randint(80, 100),
+                      "energy": random.randint(70, 100),
+                      "generation": 1,
+                      "birth_date": datetime.now().isoformat(),
+                      "recent_event": f"appeared from the digital wilderness!"
+                  }
+                  population["creatures"].append(new_creature)
+                  births.append(new_creature)
+          
+          # Sauvegarde l'état
+          with open('.ecosystem/population.json', 'w') as f:
+              json.dump(population, f, indent=2)
+          
+          # Logs pour GitHub Actions
+          print(f"🌍 Ecosystem Update:")
+          print(f"   Living creatures: {len(population['creatures'])}")
+          print(f"   Deaths this cycle: {len(deaths)}")
+          print(f"   Births this cycle: {len(births)}")
+          
+          # Prépare le rapport
+          report = {
+              "total_population": len(population["creatures"]),
+              "deaths": len(deaths),
+              "births": len(births),
+              "activity": env_stats["activity_level"],
+              "generation": population["generation"]
+          }
+          
+          with open('.ecosystem/cycle_report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+          
+          EOF
+
+      - name: Generate Ecosystem Report
+        run: |
+          python3 << 'EOF'
+          import json, random
+          from datetime import datetime
+          
+          # Charge les données
+          with open('.ecosystem/population.json', 'r') as f:
+              population = json.load(f)
+          
+          with open('.ecosystem/species.json', 'r') as f:
+              species_data = json.load(f)
+          
+          with open('.ecosystem/cycle_report.json', 'r') as f:
+              report = json.load(f)
+          
+          # Génère un rapport détaillé
+          report_lines = [
+              "# 🌍 Digital Ecosystem Report",
+              f"*Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*",
+              "",
+              f"## 📊 Population Overview",
+              f"- **Total Creatures**: {report['total_population']}",
+              f"- **Repository Activity**: {report['activity']}",
+              f"- **This Cycle**: {report['births']} births, {report['deaths']} deaths",
+              ""
+          ]
+          
+          if population["creatures"]:
+              report_lines.extend([
+                  "## 👥 Current Inhabitants",
+                  ""
+              ])
+              
+              # Groupe par espèce
+              species_count = {}
+              for creature in population["creatures"]:
+                  species = creature["species"]
+                  if species not in species_count:
+                      species_count[species] = []
+                  species_count[species].append(creature)
+              
+              for species_id, creatures in species_count.items():
+                  species_info = species_data[species_id]
+                  report_lines.append(f"### {species_info['emoji']} {species_info['name']} ({len(creatures)})")
+                  
+                  for creature in sorted(creatures, key=lambda x: x['age'], reverse=True)[:3]:  # Top 3 plus âgés
+                      age_status = "ancient" if creature['age'] > species_info['base_lifespan'] * 0.7 else "adult" if creature['age'] > species_info['base_lifespan'] * 0.3 else "young"
+                      health_status = "💚" if creature['health'] > 70 else "💛" if creature['health'] > 40 else "❤️"
+                      
+                      recent_event = creature.get('recent_event', 'is living peacefully')
+                      
+                      report_lines.append(f"- **{creature['name']}** ({age_status}, {creature['age']:.1f} days old) {health_status}")
+                      report_lines.append(f"  *Recently {recent_event}*")
+                  
+                  if len(creatures) > 3:
+                      report_lines.append(f"  *...and {len(creatures) - 3} other {species_info['name'].lower()}s*")
+                  report_lines.append("")
+          
+          # Événements spéciaux
+          special_events = []
+          if report['births'] > 3:
+              special_events.append("🎉 **Baby boom!** Many new creatures were born this cycle.")
+          if report['deaths'] > 2:
+              special_events.append("⚰️ **Natural selection** has been active in the ecosystem.")
+          if report['total_population'] > 10:
+              special_events.append("🏙️ **Thriving metropolis!** The digital ecosystem is bustling with life.")
+          if report['activity'] == 'high':
+              special_events.append("⚡ **High energy environment** - creatures are more active due to repository activity.")
+          
+          if special_events:
+              report_lines.extend([
+                  "## 🎭 Special Events",
+                  ""
+              ])
+              report_lines.extend(special_events)
+              report_lines.append("")
+          
+          # Conservation status
+          report_lines.extend([
+              "## 🔬 Ecosystem Health",
+              f"- **Biodiversity**: {len(species_count)} different species",
+              f"- **Average Generation**: {sum(c.get('generation', 1) for c in population['creatures']) / max(len(population['creatures']), 1):.1f}",
+              f"- **Conservation Status**: {'Thriving' if report['total_population'] > 5 else 'Stable' if report['total_population'] > 2 else 'Endangered'}",
+              "",
+              "*This ecosystem evolves based on repository activity. More commits and interactions create a more vibrant digital world!*"
+          ])
+          
+          # Écrit le rapport
+          with open('ECOSYSTEM_REPORT.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+          
+          print("📝 Ecosystem report generated!")
+          EOF
+
+      - name: Create Living Issues for Creatures
+        run: |
+          python3 << 'EOF'
+          import json, subprocess, os
+          
+          # Charge la population
+          with open('.ecosystem/population.json', 'r') as f:
+              population = json.load(f)
+          
+          with open('.ecosystem/species.json', 'r') as f:
+              species_data = json.load(f)
+          
+          # Pour chaque créature nouvelle ou jeune, crée/met à jour une issue
+          for creature in population["creatures"]:
+              if creature["age"] < 1.0:  # Créatures de moins d'un jour
+                  species_info = species_data[creature["species"]]
+                  
+                  # Crée le titre et le corps de l'issue
+                  title = f"{species_info['emoji']} {creature['name']} - Living Creature"
+                  
+                  # Calcule les statistiques
+                  age_days = int(creature["age"])
+                  age_hours = int((creature["age"] - age_days) * 24)
+                  max_age = species_info["base_lifespan"]
+                  life_progress = (creature["age"] / max_age) * 100
+                  
+                  body = f"""# {species_info['emoji']} Meet {creature['name']}!
+          
+          A wild **{species_info['name']}** has made this repository their home!
+          
+          ## 📊 Creature Stats
+          - **Species**: {species_info['name']} {species_info['emoji']}
+          - **Age**: {age_days} days, {age_hours} hours
+          - **Health**: {creature['health']:.0f}% {'💚' if creature['health'] > 70 else '💛' if creature['health'] > 40 else '❤️'}
+          - **Energy**: {creature['energy']:.0f}% {'⚡' if creature['energy'] > 70 else '🔋' if creature['energy'] > 40 else '🪫'}
+          - **Life Progress**: {life_progress:.1f}% (Expected lifespan: {max_age} days)
+          - **Generation**: {creature.get('generation', 1)}
+          
+          ## 🧬 Species Traits
+          {', '.join([f'`{trait}`' for trait in species_info['traits']])}
+          
+          ## 📝 Recent Activity
+          *{creature.get('recent_event', 'is exploring the repository')}*
+          
+          ## 🍽️ Diet
+          This creature feeds on: **{species_info['diet'].replace('_', ' ')}**
+          
+          ## 💭 About This Species
+          - **Size**: {species_info['size']}
+          - **Rarity**: {species_info['rarity']}
+          - **Reproduction**: {species_info['reproduction'].replace('_', ' ')}
+          
+          ---
+          
+          *This is a living digital creature that exists in your repository ecosystem. It will age, potentially reproduce, and eventually pass away naturally. The ecosystem evolves based on your repository activity!*
+          
+          **Last updated**: {creature.get('birth_date', 'unknown')}
+          """
+                  
+                  # Vérifie si l'issue existe déjà
+                  try:
+                      # Recherche les issues existantes pour cette créature
+                      result = subprocess.run([
+                          'gh', 'issue', 'list', '--search', f'"{creature["name"]}" in:title', '--json', 'number,title'
+                      ], capture_output=True, text=True, env=dict(os.environ, GH_TOKEN='${{ secrets.GITHUB_TOKEN }}'))
+                      
+                      if result.returncode == 0:
+                          existing_issues = json.loads(result.stdout)
+                          if not existing_issues:  # Pas d'issue existante
+                              # Crée une nouvelle issue
+                              create_result = subprocess.run([
+                                  'gh', 'issue', 'create',
+                                  '--title', title,
+                                  '--body', body,
+                                  '--label', 'digital-creature,ecosystem'
+                              ], capture_output=True, text=True, env=dict(os.environ, GH_TOKEN='${{ secrets.GITHUB_TOKEN }}'))
+                              
+                              if create_result.returncode == 0:
+                                  print(f"🎉 Created issue for {creature['name']}")
+                              else:
+                                  print(f"❌ Failed to create issue for {creature['name']}: {create_result.stderr}")
+                  except Exception as e:
+                      print(f"⚠️ Error managing issue for {creature['name']}: {e}")
+          
+          EOF
+
+      - name: Commit Ecosystem Changes
+        run: |
+          git config user.name "Digital Ecosystem Bot"
+          git config user.email "ecosystem@digital-life.local"
+          
+          git add .ecosystem/ ECOSYSTEM_REPORT.md
+          
+          # Compte les créatures pour le message de commit
+          creature_count=$(python3 -c "
+          import json
+          with open('.ecosystem/population.json', 'r') as f:
+              pop = json.load(f)
+          print(len(pop['creatures']))
+          ")
+          
+          git commit -m "🌍 Ecosystem cycle: $creature_count creatures living in the digital world" || echo "No changes to commit"
+          git push || echo "Push failed, but that's okay"
+
+      - name: Ecosystem Summary
+        run: |
+          echo "🌍 Digital Ecosystem Summary:"
+          echo "================================"
+          cat ECOSYSTEM_REPORT.md | head -20
+          echo ""
+          echo "Full report available in ECOSYSTEM_REPORT.md"
