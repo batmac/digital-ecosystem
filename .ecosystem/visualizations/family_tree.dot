@@ -1,0 +1,30 @@
+
+digraph EcosystemFamilyTree {
+    rankdir=TB;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    
+    // Style pour différentes générations
+    node [fillcolor="#E3F2FD"];
+
+        "code_butterfly_1753392858_5357" [
+            label="🦋 Wandering Code Butterfly\nGen 1\nAge: 0.8d",
+            fillcolor="#FFCDD2",
+            color="#4CAF50",
+            penwidth=2
+        ];
+    
+    
+    // Légende
+    subgraph cluster_legend {
+        label="Legend";
+        style="rounded,filled";
+        fillcolor="#F5F5F5";
+        
+        legend1 [label="🟢 Healthy (70%+)", fillcolor="#4CAF50", color="#4CAF50"];
+        legend2 [label="🟡 Warning (40-70%)", fillcolor="#FF9800", color="#FF9800"];
+        legend3 [label="🔴 Critical (<40%)", fillcolor="#F44336", color="#F44336"];
+        
+        legend1 -> legend2 -> legend3 [style=invis];
+    }
+}

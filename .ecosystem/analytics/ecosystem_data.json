@@ -1,0 +1,126 @@
+{
+  "timestamp": "2025-07-24T21:39:08.628740",
+  "population": {
+    "creatures": [
+      {
+        "id": "code_butterfly_1753392858_5357",
+        "name": "Wandering Code Butterfly",
+        "species": "code_butterfly",
+        "age": 0.8377162651762147,
+        "health": 131.21304991327878,
+        "energy": 86,
+        "generation": 1,
+        "birth_date": "2025-07-24T21:34:18.359036",
+        "recent_event": "found a cozy spot in the tests folder"
+      }
+    ],
+    "generation": 1,
+    "events": []
+  },
+  "species_data": {
+    "code_butterfly": {
+      "emoji": "\ud83e\udd8b",
+      "name": "Code Butterfly",
+      "base_lifespan": 14,
+      "traits": [
+        "pollinates",
+        "migrates",
+        "colorful"
+      ],
+      "diet": "nectar_commits",
+      "reproduction": "metamorphosis",
+      "rarity": "common",
+      "size": "small"
+    },
+    "bug_hunter_spider": {
+      "emoji": "\ud83d\udd77\ufe0f",
+      "name": "Bug Hunter Spider",
+      "base_lifespan": 21,
+      "traits": [
+        "patient",
+        "trap_builder",
+        "nocturnal"
+      ],
+      "diet": "bugs_issues",
+      "reproduction": "web_eggs",
+      "rarity": "common",
+      "size": "small"
+    },
+    "data_dragon": {
+      "emoji": "\ud83d\udc09",
+      "name": "Data Dragon",
+      "base_lifespan": 90,
+      "traits": [
+        "hoards_data",
+        "fire_breath",
+        "ancient_wisdom"
+      ],
+      "diet": "databases",
+      "reproduction": "golden_eggs",
+      "rarity": "legendary",
+      "size": "large"
+    },
+    "logic_lynx": {
+      "emoji": "\ud83d\udc31",
+      "name": "Logic Lynx",
+      "base_lifespan": 42,
+      "traits": [
+        "stealth",
+        "pattern_recognition",
+        "agile"
+      ],
+      "diet": "edge_cases",
+      "reproduction": "litter",
+      "rarity": "uncommon",
+      "size": "medium"
+    },
+    "memory_whale": {
+      "emoji": "\ud83d\udc0b",
+      "name": "Memory Whale",
+      "base_lifespan": 120,
+      "traits": [
+        "deep_storage",
+        "migration",
+        "ancient_knowledge"
+      ],
+      "diet": "legacy_code",
+      "reproduction": "song_ritual",
+      "rarity": "rare",
+      "size": "huge"
+    },
+    "quantum_firefly": {
+      "emoji": "\u2728",
+      "name": "Quantum Firefly",
+      "base_lifespan": 7,
+      "traits": [
+        "bioluminescent",
+        "quantum_tunneling",
+        "ephemeral"
+      ],
+      "diet": "photons",
+      "reproduction": "light_burst",
+      "rarity": "mystical",
+      "size": "tiny"
+    }
+  },
+  "historical_events": [],
+  "family_relationships": {},
+  "ecosystem_metrics": {
+    "total_population": 1,
+    "species_diversity": 1,
+    "dominant_species": [
+      "code_butterfly",
+      1
+    ],
+    "average_age": 0.84,
+    "average_health": 131.21,
+    "average_energy": 86.0,
+    "oldest_creature_age": 0.8377162651762147,
+    "youngest_creature_age": 0.8377162651762147,
+    "current_generation": 1,
+    "genetic_diversity": 1,
+    "species_distribution": {
+      "code_butterfly": 1
+    }
+  }
+}

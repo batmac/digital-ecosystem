@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Digital Ecosystem Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .metric-card {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .creatures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .creature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+        .health-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .health-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .energy-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            transition: width 0.3s ease;
+        }
+        .species-section {
+            margin: 30px 0;
+        }
+        .species-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .species-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Digital Ecosystem Dashboard</h1>
+            <p>Living creatures inhabiting this repository</p>
+            <small>Last updated: 2025-07-24 21:39:08</small>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">1</div>
+                <div>Living Creatures</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1</div>
+                <div>Species Types</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1</div>
+                <div>Max Generation</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">131%</div>
+                <div>Avg Health</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.8</div>
+                <div>Average Age (days)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">86%</div>
+                <div>Avg Energy</div>
+            </div>
+        </div>
+
+        <div class="species-section">
+            <h2>🧬 Species Distribution</h2>
+            <div class="species-list">
+    
+            <div class="species-badge">
+                <span style="font-size: 1.5em;">🦋</span>
+                <span>Code Butterfly: 1</span>
+            </div>
+        
+            </div>
+        </div>
+    
+        <div class="species-section">
+            <h2>👥 Living Creatures</h2>
+            <div class="creatures-grid">
+    
+            <div class="creature-card ">
+                <h3>🦋 Wandering Code Butterfly</h3>
+                <p><strong>Species:</strong> Code Butterfly</p>
+                <p><strong>Age:</strong> 0.8 days (young)</p>
+                <p><strong>Generation:</strong> 1</p>
+                
+                <div>
+                    <small>Health: 131%</small>
+                    <div class="health-bar">
+                        <div class="health-fill" style="width: 131.21304991327878%; background: #4CAF50;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <small>Energy: 86%</small>
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 86%;"></div>
+                    </div>
+                </div>
+                
+                <p style="font-style: italic; margin-top: 15px; opacity: 0.9;">
+                    Recently found a cozy spot in the tests folder
+                </p>
+            </div>
+        
+            </div>
+        </div>
+    
+        <div style="text-align: center; margin-top: 40px; opacity: 0.8;">
+            <p>🌱 This ecosystem evolves based on your repository activity!</p>
+            <p>More commits, PRs, and interactions create a more vibrant digital world.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Ajoute un peu d'interactivité
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.creature-card, .metric-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
