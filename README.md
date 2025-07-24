@@ -49,8 +49,10 @@ gh workflow run digital-ecosystem.yml
 #### 🌐 Dashboard Public (Recommandé)
 Votre écosystème est automatiquement publié sur GitHub Pages :
 ```
-https://batmac.github.io/digital-ecosystem/
+https://[votre-username].github.io/[nom-du-repo]/
 ```
+
+**Exemple live** : https://batmac.github.io/digital-ecosystem/
 
 #### 💻 Dashboard Local  
 ```bash
@@ -204,9 +206,11 @@ Ajoute dans `creature-events.yml` :
 
 ### 🌐 GitHub Pages (Automatique)
 Votre dashboard est **automatiquement publié** sur GitHub Pages :
-- **Dashboard principal** : `https://batmac.github.io/digital-ecosystem/`
-- **Timeline** : `https://batmac.github.io/digital-ecosystem/timeline.html`
-- **Rapport écosystème** : `https://batmac.github.io/digital-ecosystem/ECOSYSTEM_REPORT.md`
+- **Dashboard principal** : `https://[username].github.io/[repo]/`
+- **Timeline** : `https://[username].github.io/[repo]/timeline.html`
+- **Rapport écosystème** : `https://[username].github.io/[repo]/ECOSYSTEM_REPORT.md`
+
+**🌟 Exemple live** : https://batmac.github.io/digital-ecosystem/
 
 ✨ **Mise à jour automatique** : Chaque cycle de l'écosystème met à jour le site !
 
