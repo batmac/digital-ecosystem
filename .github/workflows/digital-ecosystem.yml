@@ -563,6 +563,23 @@ jobs:
           print(len(pop['creatures']))
           ")
           
+          # Synchronise vers GitHub Pages (docs/)
+          echo "📄 Synchronizing to GitHub Pages..."
+          mkdir -p docs
+          
+          # Copie tous les fichiers dashboard vers docs/
+          if [ -d ".ecosystem/dashboard" ]; then
+            cp -r .ecosystem/dashboard/* docs/ 2>/dev/null || echo "Dashboard files not found"
+          fi
+          
+          # Copie le rapport principal
+          if [ -f "ECOSYSTEM_REPORT.md" ]; then
+            cp ECOSYSTEM_REPORT.md docs/ 2>/dev/null || echo "Report not found"
+          fi
+          
+          echo "✅ GitHub Pages synchronization complete"
+          
+          git add -A
           git commit -m "🌍 Ecosystem cycle: $creature_count creatures living in the digital world" || echo "No changes to commit"
           git push || echo "Push failed, but that's okay"
 
