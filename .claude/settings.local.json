@@ -10,7 +10,14 @@
       "Bash(git push:*)",
       "Bash(git pull:*)",
       "Bash(gh api:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(find:*)",
+      "Bash(diff:*)",
+      "Bash(grep:*)",
+      "Bash(gh run watch:*)",
+      "mcp__exa_web_search__crawling"
     ],
     "deny": []
   }

@@ -46,6 +46,13 @@ gh workflow run digital-ecosystem.yml
 
 ### 3. Visualisation
 
+#### 🌐 Dashboard Public (Recommandé)
+Votre écosystème est automatiquement publié sur GitHub Pages :
+```
+https://[votre-username].github.io/digital-ecosystem/
+```
+
+#### 💻 Dashboard Local  
 ```bash
 # Lance un serveur local pour voir le dashboard
 python3 -m http.server 8000
@@ -195,16 +202,25 @@ Ajoute dans `creature-events.yml` :
 
 ## 📊 Dashboard & Visualisations
 
-### Fichiers Générés
+### 🌐 GitHub Pages (Automatique)
+Votre dashboard est **automatiquement publié** sur GitHub Pages :
+- **Dashboard principal** : `https://[username].github.io/[repo]/`
+- **Timeline** : `https://[username].github.io/[repo]/timeline.html`
+- **Rapport écosystème** : `https://[username].github.io/[repo]/ECOSYSTEM_REPORT.md`
+
+✨ **Mise à jour automatique** : Chaque cycle de l'écosystème met à jour le site !
+
+### 📁 Fichiers Générés
 - `.ecosystem/dashboard/index.html` - Dashboard principal
 - `.ecosystem/dashboard/timeline.html` - Timeline événements
 - `.ecosystem/visualizations/family_tree.md` - Arbre généalogique
 - `ECOSYSTEM_REPORT.md` - Rapport quotidien
+- `docs/` - Version publique pour GitHub Pages
 
-### Métriques Trackées
-- Population par espèce
+### 📈 Métriques Trackées
+- Population par espèce avec graphiques temps réel
 - Santé moyenne et distribution d'âge
-- Taux de naissance/mort
+- Taux de naissance/mort historiques
 - Relations familiales et générations
 - Historique événements avec impacts
 
@@ -296,6 +312,7 @@ MIT License - Donnez vie à vos repositories !
 
 ---
 
-**🌍 Pet Status**: *Aucune créature pour le moment - commit quelque chose pour faire naître la première !*
+**🌍 Live Dashboard**: https://batmac.github.io/digital-ecosystem/ 
+**🦋 Current Population**: 2 créatures (Code Butterfly + Quantum Firefly)
 
 *Créé avec ❤️ pour apporter de la magie dans vos repositories*
