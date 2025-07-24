@@ -526,12 +526,34 @@ jobs:
           
           EOF
 
+      - name: Sync to GitHub Pages
+        run: |
+          # Créer le dossier docs s'il n'existe pas
+          mkdir -p docs
+          
+          # Copier le rapport de l'écosystème vers docs/
+          if [ -f "ECOSYSTEM_REPORT.md" ]; then
+            cp ECOSYSTEM_REPORT.md docs/
+            echo "✅ Synced ECOSYSTEM_REPORT.md to GitHub Pages"
+          fi
+          
+          # Copier les fichiers du dashboard s'ils existent
+          if [ -f ".ecosystem/dashboard/index.html" ]; then
+            cp .ecosystem/dashboard/index.html docs/
+            echo "✅ Synced dashboard to GitHub Pages"
+          fi
+          
+          if [ -f ".ecosystem/dashboard/timeline.html" ]; then
+            cp .ecosystem/dashboard/timeline.html docs/
+            echo "✅ Synced timeline to GitHub Pages"
+          fi
+
       - name: Commit Ecosystem Changes
         run: |
           git config user.name "Digital Ecosystem Bot"
           git config user.email "ecosystem@digital-life.local"
           
-          git add .ecosystem/ ECOSYSTEM_REPORT.md
+          git add .ecosystem/ ECOSYSTEM_REPORT.md docs/
           
           # Compte les créatures pour le message de commit
           creature_count=$(python3 -c "

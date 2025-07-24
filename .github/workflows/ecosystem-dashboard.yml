@@ -664,14 +664,46 @@ jobs:
           
           EOF
 
+      - name: Sync Dashboard to GitHub Pages
+        run: |
+          # Créer le dossier docs s'il n'existe pas
+          mkdir -p docs
+          
+          # Copier les fichiers du dashboard vers docs/
+          if [ -f ".ecosystem/dashboard/index.html" ]; then
+            cp .ecosystem/dashboard/index.html docs/
+            echo "✅ Copied dashboard index.html to docs/"
+          fi
+          
+          if [ -f ".ecosystem/dashboard/timeline.html" ]; then
+            cp .ecosystem/dashboard/timeline.html docs/
+            echo "✅ Copied timeline.html to docs/"
+          fi
+          
+          # Copier le rapport de l'écosystème s'il existe
+          if [ -f "ECOSYSTEM_REPORT.md" ]; then
+            cp ECOSYSTEM_REPORT.md docs/
+            echo "✅ Copied ECOSYSTEM_REPORT.md to docs/"
+          fi
+          
+          # Copier les données analytics pour accès depuis le dashboard
+          if [ -d ".ecosystem/analytics" ]; then
+            mkdir -p docs/analytics
+            cp -r .ecosystem/analytics/* docs/analytics/ 2>/dev/null || echo "No analytics data to copy"
+            echo "✅ Copied analytics data to docs/"
+          fi
+          
+          echo "📁 GitHub Pages structure:"
+          ls -la docs/
+
       - name: Commit Dashboard Updates
         run: |
           git config user.name "Ecosystem Dashboard Bot"
           git config user.email "dashboard@digital-ecosystem.local"
           
-          git add .ecosystem/
+          git add .ecosystem/ docs/
           
-          git commit -m "📊 Updated ecosystem dashboard and visualizations" || echo "No changes to commit"
+          git commit -m "📊 Updated ecosystem dashboard and GitHub Pages" || echo "No changes to commit"
           git push || echo "Push failed, but dashboard is ready"
 
       - name: Dashboard Summary
@@ -690,14 +722,5 @@ jobs:
           echo ""
           if [[ -f ".ecosystem/analytics/ecosystem_data.json" ]]; then
               echo "📊 Current Stats:"
-              python3 -c "
-              import json
-              with open('.ecosystem/analytics/ecosystem_data.json', 'r') as f:
-                  data = json.load(f)
-              metrics = data.get('ecosystem_metrics', {})
-              print(f\"   🌍 Population: {metrics.get('total_population', 0)} creatures\")
-              print(f\"   🧬 Species: {metrics.get('species_diversity', 0)} types\")
-              print(f\"   🏆 Max Generation: {metrics.get('current_generation', 1)}\")
-              print(f\"   💚 Avg Health: {metrics.get('average_health', 0):.0f}%\")
-              "
+              echo "   Dashboard and analytics data available!"
           fi
