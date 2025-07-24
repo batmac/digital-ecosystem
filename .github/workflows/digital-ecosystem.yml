@@ -339,14 +339,27 @@ jobs:
           from datetime import datetime
           
           # Charge les données
-          with open('.ecosystem/population.json', 'r') as f:
-              population = json.load(f)
+          try:
+              with open('.ecosystem/population.json', 'r') as f:
+                  population = json.load(f)
+          except FileNotFoundError:
+              population = {"creatures": [], "generation": 1, "events": []}
           
           with open('.ecosystem/species.json', 'r') as f:
               species_data = json.load(f)
           
-          with open('.ecosystem/cycle_report.json', 'r') as f:
-              report = json.load(f)
+          try:
+              with open('.ecosystem/cycle_report.json', 'r') as f:
+                  report = json.load(f)
+          except FileNotFoundError:
+              # Premier run - créer un rapport par défaut
+              report = {
+                  "total_population": 0,
+                  "deaths": 0,
+                  "births": 0,
+                  "activity": "low",
+                  "generation": 1
+              }
           
           # Génère un rapport détaillé
           report_lines = [
