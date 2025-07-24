@@ -2,14 +2,21 @@
 name: 🚀 Deploy Dashboard to GitHub Pages
 
 on:
+  # Déploiement manuel
+  workflow_dispatch:
+  
   # Déclenché après chaque mise à jour de l'écosystème
   workflow_run:
     workflows: ["🌍 Digital Ecosystem", "📊 Ecosystem Dashboard"]
     types:
       - completed
   
-  # Déploiement manuel
-  workflow_dispatch:
+  # Push sur main
+  push:
+    branches: ["main"]
+    paths:
+      - '.ecosystem/**'
+      - 'ECOSYSTEM_REPORT.md'
 
 permissions:
   contents: read
