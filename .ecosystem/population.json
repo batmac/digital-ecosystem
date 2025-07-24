@@ -1,0 +1,17 @@
+{
+  "creatures": [
+    {
+      "id": "code_butterfly_1753392858_5357",
+      "name": "Wandering Code Butterfly",
+      "species": "code_butterfly",
+      "age": 0.3377162651762146,
+      "health": 83,
+      "energy": 91,
+      "generation": 1,
+      "birth_date": "2025-07-24T21:34:18.359036",
+      "recent_event": "appeared from the digital wilderness!"
+    }
+  ],
+  "generation": 1,
+  "events": []
+}
