@@ -168,13 +168,16 @@ L'écosystème **vit sa vie tout seul** ! Même si tu ne commites rien pendant d
 }
 ```
 
-### Modifier les Taux d'Apparition
+### Modifier les Taux d'Apparition (MODE AUTONOME)
 
 Dans `digital-ecosystem.yml` :
 
 ```python
-# Augmente la probabilité de spawn
-spawn_chance = 0.2 + (commit_count * 0.1) + (open_issues * 0.05)
+# L'écosystème autonome avec spawn élevé
+base_spawn_chance = 0.4  # 40% de chance de base !
+activity_bonus = (commit_count * 0.1) + (open_issues * 0.05)
+population_factor = max(0.1, 1.0 - (len(population["creatures"]) * 0.05))
+final_spawn_chance = (base_spawn_chance + activity_bonus) * population_factor
 ```
 
 ### Créer des Événements Personnalisés
@@ -205,41 +208,59 @@ Ajoute dans `creature-events.yml` :
 - Relations familiales et générations
 - Historique événements avec impacts
 
-## 🎪 Exemples d'Écosystèmes
+## 🎪 Exemples d'Écosystèmes (MODE AUTONOME)
 
-### Repo Débutant (0-5 commits/semaine)
-- 1-2 créatures communes
-- Cycles de vie lents
-- Événements rares mais marquants
+### Repo Dormant (aucune activité)
+- **3-8 créatures** naissent spontanément
+- Événements cosmiques réguliers
+- Évolution naturelle et reproduction
+- **40% de spawn** toutes les 2h garantit la vie !
 
-### Repo Actif (10+ commits/semaine)  
-- 5-10 créatures diverses
-- Reproduction fréquente
-- Espèces rares qui apparaissent
-- Événements multiples quotidiens
+### Repo Occasionnel (1-5 commits/semaine)  
+- **8-15 créatures** avec bonus d'activité
+- Mélange d'événements spontanés et réactifs
+- Espèces rares commencent à apparaître
+- Lignées sur 2-3 générations
 
-### Repo Mature (6+ mois)
-- 15+ créatures multi-générations
+### Repo Actif (10+ commits/semaine)
+- **15-25 créatures** dans un écosystème riche
+- Toutes les espèces représentées
+- Événements quotidiens multiples
 - Lignées complexes sur 5+ générations
-- Histoire riche d'événements
-- Créatures anciennes devenues sages
+- Créatures légendaires et mystiques
 
-## 🐛 Dépannage
+### Repo Abandonné (6+ mois sans commits)
+- L'écosystème **continue de vivre** !
+- Population stable de 5-12 créatures
+- Histoires épiques d'évolution autonome
+- Créatures anciennes avec sagesse profonde
+- Parfait exemple de "digital wilderness"
+
+## 🐛 Dépannage (MODE AUTONOME)
 
 ### Pas de créatures qui apparaissent ?
-1. Vérifiez les permissions GitHub Actions
-2. Lancez manuellement le workflow
-3. Augmentez l'activité (commits/issues)
+1. **Vérifiez les permissions** GitHub Actions (read/write)
+2. **Lancez manuellement** le workflow une première fois
+3. **Attendez 2-4h** - l'écosystème autonome prend le relais !
+4. ~~Augmentez l'activité~~ → Plus besoin ! 40% de spawn garanti
 
 ### Dashboard vide ?
-1. Exécutez `ecosystem-dashboard.yml`
-2. Vérifiez que `.ecosystem/` contient des fichiers
-3. Utilisez un serveur web local
+1. Exécutez `ecosystem-dashboard.yml` (génération manuelle)
+2. Vérifiez que `.ecosystem/` contient des fichiers JSON
+3. **Patience** - le dashboard se construit automatiquement
+
+### L'écosystème semble "mort" ?
+🚨 **Impossible en mode autonome !** Avec 40% de spawn toutes les 2h :
+- **Minimum 1-2 créatures** naissent par jour
+- Si population = 0, spawn chance = 40% sans limites
+- Les événements spontanés relancent l'activité
+- **L'écosystème ne peut pas mourir complètement**
 
 ### Erreurs de permissions ?
-1. Settings → Actions → Permissions  
-2. "Read and write permissions"
-3. "Allow Actions to create PRs"
+1. Settings → Actions → General → Permissions  
+2. "Read and write permissions" ✅
+3. "Allow GitHub Actions to create and approve pull requests" ✅
+4. Save - c'est le plus important !
 
 ## 🌟 Philosophie du Projet
 
