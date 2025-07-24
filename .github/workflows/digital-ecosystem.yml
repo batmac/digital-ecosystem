@@ -373,19 +373,19 @@ jobs:
               ""
           ]
           
+          # Groupe par espèce
+          species_count = {}
+          for creature in population["creatures"]:
+              species = creature["species"]
+              if species not in species_count:
+                  species_count[species] = []
+              species_count[species].append(creature)
+          
           if population["creatures"]:
               report_lines.extend([
                   "## 👥 Current Inhabitants",
                   ""
               ])
-              
-              # Groupe par espèce
-              species_count = {}
-              for creature in population["creatures"]:
-                  species = creature["species"]
-                  if species not in species_count:
-                      species_count[species] = []
-                  species_count[species].append(creature)
               
               for species_id, creatures in species_count.items():
                   species_info = species_data[species_id]
