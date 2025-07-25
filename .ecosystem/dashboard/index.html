@@ -105,6 +105,27 @@
             50% { opacity: 0.7; }
             100% { opacity: 1; }
         }
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -112,12 +133,19 @@
         <div class="header">
             <h1>🌍 Digital Ecosystem Dashboard</h1>
             <p>Living creatures inhabiting this repository</p>
-            <small>Last updated: 2025-07-24 23:48:18</small>
+            <small>Last updated: 2025-07-25 00:02:17</small>
+        </div>
+        
+        <div class="navigation">
+            <a href="timeline.html" class="nav-link">📅 Timeline</a>
+            <a href="ECOSYSTEM_REPORT.md" class="nav-link">📊 Report</a>
+            <a href="analytics/ecosystem_data.json" class="nav-link">📈 Data</a>
+            <a href="https://github.com/batmac/digital-ecosystem" class="nav-link" target="_blank">🐙 GitHub</a>
         </div>
         
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-value">5</div>
+                <div class="metric-value">6</div>
                 <div>Living Creatures</div>
             </div>
             <div class="metric-card">
@@ -129,15 +157,15 @@
                 <div>Max Generation</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">118%</div>
+                <div class="metric-value">116%</div>
                 <div>Avg Health</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">2.4</div>
+                <div class="metric-value">2.6</div>
                 <div>Average Age (days)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">82%</div>
+                <div class="metric-value">80%</div>
                 <div>Avg Energy</div>
             </div>
         </div>
@@ -163,7 +191,7 @@
         
             <div class="species-badge">
                 <span style="font-size: 1.5em;">🕷️</span>
-                <span>Bug Hunter Spider: 1</span>
+                <span>Bug Hunter Spider: 2</span>
             </div>
         
             </div>
@@ -176,20 +204,20 @@
             <div class="creature-card ">
                 <h3>🦋 Wandering Code Butterfly</h3>
                 <p><strong>Species:</strong> Code Butterfly</p>
-                <p><strong>Age:</strong> 3.3 days (young)</p>
+                <p><strong>Age:</strong> 3.8 days (young)</p>
                 <p><strong>Generation:</strong> 1</p>
                 
                 <div>
-                    <small>Health: 104%</small>
+                    <small>Health: 99%</small>
                     <div class="health-bar">
-                        <div class="health-fill" style="width: 103.92733562756449%; background: #4CAF50;"></div>
+                        <div class="health-fill" style="width: 99.07019277042163%; background: #4CAF50;"></div>
                     </div>
                 </div>
                 
                 <div>
-                    <small>Energy: 73%</small>
+                    <small>Energy: 71%</small>
                     <div class="energy-bar">
-                        <div class="energy-fill" style="width: 73%;"></div>
+                        <div class="energy-fill" style="width: 71%;"></div>
                     </div>
                 </div>
                 
@@ -201,20 +229,20 @@
             <div class="creature-card ">
                 <h3>🕷️ Wild Bug Hunter Spider</h3>
                 <p><strong>Species:</strong> Bug Hunter Spider</p>
-                <p><strong>Age:</strong> 3.1 days (young)</p>
+                <p><strong>Age:</strong> 3.6 days (young)</p>
                 <p><strong>Generation:</strong> 1</p>
                 
                 <div>
-                    <small>Health: 118%</small>
+                    <small>Health: 112%</small>
                     <div class="health-bar">
-                        <div class="health-fill" style="width: 118.32318779162887%; background: #4CAF50;"></div>
+                        <div class="health-fill" style="width: 112.41842588686696%; background: #4CAF50;"></div>
                     </div>
                 </div>
                 
                 <div>
-                    <small>Energy: 80%</small>
+                    <small>Energy: 76%</small>
                     <div class="energy-bar">
-                        <div class="energy-fill" style="width: 80%;"></div>
+                        <div class="energy-fill" style="width: 76%;"></div>
                     </div>
                 </div>
                 
@@ -226,20 +254,20 @@
             <div class="creature-card ">
                 <h3>✨ Wandering Quantum Firefly</h3>
                 <p><strong>Species:</strong> Quantum Firefly</p>
-                <p><strong>Age:</strong> 2.5 days (adult)</p>
+                <p><strong>Age:</strong> 3.0 days (adult)</p>
                 <p><strong>Generation:</strong> 1</p>
                 
                 <div>
-                    <small>Health: 99%</small>
+                    <small>Health: 89%</small>
                     <div class="health-bar">
-                        <div class="health-fill" style="width: 99.01713774696371%; background: #4CAF50;"></div>
+                        <div class="health-fill" style="width: 89.30285203267799%; background: #4CAF50;"></div>
                     </div>
                 </div>
                 
                 <div>
-                    <small>Energy: 78%</small>
+                    <small>Energy: 74%</small>
                     <div class="energy-bar">
-                        <div class="energy-fill" style="width: 78%;"></div>
+                        <div class="energy-fill" style="width: 74%;"></div>
                     </div>
                 </div>
                 
@@ -251,20 +279,20 @@
             <div class="creature-card ">
                 <h3>🐱 Wild Logic Lynx</h3>
                 <p><strong>Species:</strong> Logic Lynx</p>
-                <p><strong>Age:</strong> 1.9 days (young)</p>
+                <p><strong>Age:</strong> 2.4 days (young)</p>
                 <p><strong>Generation:</strong> 1</p>
                 
                 <div>
-                    <small>Health: 130%</small>
+                    <small>Health: 128%</small>
                     <div class="health-bar">
-                        <div class="health-fill" style="width: 130.4655739686015%; background: #4CAF50;"></div>
+                        <div class="health-fill" style="width: 127.51319301622054%; background: #4CAF50;"></div>
                     </div>
                 </div>
                 
                 <div>
-                    <small>Energy: 84%</small>
+                    <small>Energy: 82%</small>
                     <div class="energy-bar">
-                        <div class="energy-fill" style="width: 84%;"></div>
+                        <div class="energy-fill" style="width: 82%;"></div>
                     </div>
                 </div>
                 
@@ -276,25 +304,50 @@
             <div class="creature-card ">
                 <h3>🦋 Wandering Code Butterfly</h3>
                 <p><strong>Species:</strong> Code Butterfly</p>
-                <p><strong>Age:</strong> 1.2 days (young)</p>
+                <p><strong>Age:</strong> 1.7 days (young)</p>
                 <p><strong>Generation:</strong> 1</p>
                 
                 <div>
-                    <small>Health: 140%</small>
+                    <small>Health: 131%</small>
                     <div class="health-bar">
-                        <div class="health-fill" style="width: 139.89009713941084%; background: #4CAF50;"></div>
+                        <div class="health-fill" style="width: 131.03295428226795%; background: #4CAF50;"></div>
                     </div>
                 </div>
                 
                 <div>
-                    <small>Energy: 97%</small>
+                    <small>Energy: 91%</small>
                     <div class="energy-bar">
-                        <div class="energy-fill" style="width: 97%;"></div>
+                        <div class="energy-fill" style="width: 91%;"></div>
                     </div>
                 </div>
                 
                 <p style="font-style: italic; margin-top: 15px; opacity: 0.9;">
                     Recently experienced a moment of pure digital enlightenment
+                </p>
+            </div>
+        
+            <div class="creature-card ">
+                <h3>🕷️ Wild Bug Hunter Spider</h3>
+                <p><strong>Species:</strong> Bug Hunter Spider</p>
+                <p><strong>Age:</strong> 1.1 days (young)</p>
+                <p><strong>Generation:</strong> 1</p>
+                
+                <div>
+                    <small>Health: 134%</small>
+                    <div class="health-bar">
+                        <div class="health-fill" style="width: 133.7811662022921%; background: #4CAF50;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <small>Energy: 88%</small>
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 88%;"></div>
+                    </div>
+                </div>
+                
+                <p style="font-style: italic; margin-top: 15px; opacity: 0.9;">
+                    Recently appeared from the digital wilderness!
                 </p>
             </div>
         
