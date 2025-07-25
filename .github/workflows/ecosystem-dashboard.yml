@@ -601,7 +601,9 @@ jobs:
                       try:
                           from datetime import timedelta
                           birth_datetime = datetime.fromisoformat(birth_date.replace('Z', '+00:00')) if birth_date else datetime.now()
-                          adult_datetime = birth_datetime + timedelta(days=base_lifespan * 0.25)
+                          # Calcule quand la créature est devenue adulte (dans le passé)
+                          days_since_adult = age - (base_lifespan * 0.25)
+                          adult_datetime = datetime.now() - timedelta(days=days_since_adult)
                           events.append({
                               "timestamp": adult_datetime.isoformat(),
                               "type": "creature_maturity",
@@ -617,7 +619,9 @@ jobs:
                       try:
                           from datetime import timedelta
                           birth_datetime = datetime.fromisoformat(birth_date.replace('Z', '+00:00')) if birth_date else datetime.now()
-                          ancient_datetime = birth_datetime + timedelta(days=base_lifespan * 0.7)
+                          # Calcule quand la créature est devenue ancienne (dans le passé)
+                          days_since_ancient = age - (base_lifespan * 0.7)
+                          ancient_datetime = datetime.now() - timedelta(days=days_since_ancient)
                           events.append({
                               "timestamp": ancient_datetime.isoformat(),
                               "type": "creature_ancient",
