@@ -562,6 +562,13 @@ jobs:
               with open('.ecosystem/population.json', 'r') as f:
                   population = json.load(f)
               
+              # Charge les données des espèces pour les noms
+              species_data = {}
+              if os.path.exists('.ecosystem/species.json'):
+                  with open('.ecosystem/species.json', 'r') as f:
+                      species_data = json.load(f)
+              
+              # Ajoute les événements de l'écosystème
               for event in population.get("events", [])[-20:]:  # 20 derniers événements
                   events.append({
                       "timestamp": event["timestamp"],
@@ -569,6 +576,58 @@ jobs:
                       "description": event["description"],
                       "affected": event.get("affected_creatures", 0)
                   })
+              
+              # Ajoute les événements de cycle de vie des créatures
+              for creature in population.get("creatures", []):
+                  species_info = species_data.get(creature["species"], {"emoji": "❓", "name": "Unknown Species"})
+                  
+                  # Événement de naissance
+                  birth_date = creature.get("birth_date")
+                  if birth_date:
+                      events.append({
+                          "timestamp": birth_date,
+                          "type": "creature_birth",
+                          "description": f"{species_info['emoji']} {creature['name']} was born into the digital ecosystem! A new {species_info['name']} joins generation {creature.get('generation', 1)}.",
+                          "creature_id": creature["id"],
+                          "creature_name": creature["name"],
+                          "species": species_info["name"]
+                      })
+                  
+                  # Événements d'âge (milestones)
+                  age = creature["age"]
+                  base_lifespan = species_info.get("base_lifespan", 30)
+                  
+                  if age > base_lifespan * 0.25:  # Adulte (25% de la durée de vie)
+                      try:
+                          from datetime import timedelta
+                          birth_datetime = datetime.fromisoformat(birth_date.replace('Z', '+00:00')) if birth_date else datetime.now()
+                          adult_datetime = birth_datetime + timedelta(days=base_lifespan * 0.25)
+                          events.append({
+                              "timestamp": adult_datetime.isoformat(),
+                              "type": "creature_maturity",
+                              "description": f"🌱 {creature['name']} reached adulthood and is now a mature {species_info['name']}.",
+                              "creature_id": creature["id"],
+                              "creature_name": creature["name"],
+                              "species": species_info["name"]
+                          })
+                      except:
+                          pass
+                  
+                  if age > base_lifespan * 0.7:  # Ancient (70% de la durée de vie)
+                      try:
+                          from datetime import timedelta
+                          birth_datetime = datetime.fromisoformat(birth_date.replace('Z', '+00:00')) if birth_date else datetime.now()
+                          ancient_datetime = birth_datetime + timedelta(days=base_lifespan * 0.7)
+                          events.append({
+                              "timestamp": ancient_datetime.isoformat(),
+                              "type": "creature_ancient",
+                              "description": f"🧓 {creature['name']} has become an ancient {species_info['name']}, gaining wisdom from {age:.1f} days of digital life.",
+                              "creature_id": creature["id"],
+                              "creature_name": creature["name"],
+                              "species": species_info["name"]
+                          })
+                      except:
+                          pass
           
           # Trie par timestamp
           events.sort(key=lambda x: x["timestamp"])
@@ -625,6 +684,18 @@ jobs:
                       background: #2196F3;
                       border: 3px solid white;
                   }}
+                  .timeline-item.birth::before {{
+                      background: #4CAF50;
+                  }}
+                  .timeline-item.maturity::before {{
+                      background: #FF9800;
+                  }}
+                  .timeline-item.ancient::before {{
+                      background: #9C27B0;
+                  }}
+                  .timeline-item.death::before {{
+                      background: #F44336;
+                  }}
                   .event-date {{
                       color: #666;
                       font-size: 0.9em;
@@ -665,8 +736,19 @@ jobs:
               except:
                   formatted_date = event["timestamp"]
               
+              # Détermine la classe CSS selon le type d'événement
+              event_class = ""
+              if event["type"] == "creature_birth":
+                  event_class = " birth"
+              elif event["type"] == "creature_maturity":
+                  event_class = " maturity"
+              elif event["type"] == "creature_ancient":
+                  event_class = " ancient"
+              elif event["type"] == "creature_death":
+                  event_class = " death"
+              
               timeline_html += f'''
-                      <div class="timeline-item">
+                      <div class="timeline-item{event_class}">
                           <div class="event-date">{formatted_date}</div>
                           <div class="event-type">{event["type"].replace('_', ' ').title()}</div>
                           <div class="event-description">{event["description"]}</div>
@@ -674,6 +756,8 @@ jobs:
               
               if "affected" in event:
                   timeline_html += f'<div class="event-meta">Affected {event["affected"]} creatures</div>'
+              elif "creature_name" in event:
+                  timeline_html += f'<div class="event-meta">Creature: {event["creature_name"]} ({event["species"]})</div>'
               
               timeline_html += '</div>'
           
