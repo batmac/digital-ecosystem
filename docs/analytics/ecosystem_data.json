@@ -1,36 +1,25 @@
 {
-  "timestamp": "2025-07-25T12:28:03.703988",
+  "timestamp": "2025-07-25T14:08:56.545598",
   "population": {
     "creatures": [
       {
         "id": "code_butterfly_1753392858_5357",
         "name": "Wandering Code Butterfly",
         "species": "code_butterfly",
-        "age": 7.587716265176215,
-        "health": 61.641621341850204,
-        "energy": 62,
+        "age": 7.837716265176215,
+        "health": 64.21304991327878,
+        "energy": 59,
         "generation": 1,
         "birth_date": "2025-07-24T21:34:18.359036",
         "recent_event": "connected with the ancient wisdom of the codebase"
       },
       {
-        "id": "quantum_firefly_1753393678_6656",
-        "name": "Wandering Quantum Firefly",
-        "species": "quantum_firefly",
-        "age": 6.786000447140676,
-        "health": 27.44570917553513,
-        "energy": 55,
-        "generation": 1,
-        "birth_date": "2025-07-24T21:47:58.891695",
-        "recent_event": "discovered a secret passage in the code architecture"
-      },
-      {
         "id": "logic_lynx_1753394863_7694",
         "name": "Wild Logic Lynx",
         "species": "logic_lynx",
-        "age": 6.105573666484218,
-        "health": 105.37033587336339,
-        "energy": 67,
+        "age": 6.355573666484218,
+        "health": 101.89414539717292,
+        "energy": 64,
         "generation": 1,
         "birth_date": "2025-07-24T22:07:43.637693",
         "recent_event": "made friends with a code butterfly"
@@ -39,31 +28,31 @@
         "id": "bug_hunter_spider_1753395214_1998",
         "name": "Wild Bug Hunter Spider",
         "species": "bug_hunter_spider",
-        "age": 7.3151632046974235,
-        "health": 65.13271160115266,
-        "energy": 43,
+        "age": 7.5651632046974235,
+        "health": 66.18033064877173,
+        "energy": 49,
         "generation": 1,
         "birth_date": "2025-07-24T22:13:34.464828",
-        "recent_event": "discovered a hidden bug"
+        "recent_event": "felt the cosmic energy and danced under the digital stars"
       },
       {
         "id": "code_butterfly_1753397153_5909",
         "name": "Wandering Code Butterfly",
         "species": "code_butterfly",
-        "age": 5.494233000603105,
+        "age": 5.744233000603105,
         "health": 100,
-        "energy": 93,
+        "energy": 97,
         "generation": 1,
         "birth_date": "2025-07-24T22:45:53.361681",
-        "recent_event": "found a hidden treasure in the repository depths"
+        "recent_event": "connected with the ancient wisdom of the codebase"
       },
       {
         "id": "bug_hunter_spider_1753401059_2910",
         "name": "Wild Bug Hunter Spider",
         "species": "bug_hunter_spider",
-        "age": 4.857443871898325,
-        "health": 100,
-        "energy": 78,
+        "age": 5.107443871898325,
+        "health": 107.54307096419686,
+        "energy": 77,
         "generation": 1,
         "birth_date": "2025-07-24T23:50:59.168074",
         "recent_event": "connected with the ancient wisdom of the codebase"
@@ -72,9 +61,9 @@
         "id": "logic_lynx_1753403721_9188",
         "name": "Mysterious Logic Lynx",
         "species": "logic_lynx",
-        "age": 4.346419574778614,
-        "health": 114.72110557185026,
-        "energy": 73,
+        "age": 4.596419574778614,
+        "health": 112.24491509565978,
+        "energy": 71,
         "generation": 1,
         "birth_date": "2025-07-25T00:35:21.930681",
         "recent_event": "learned a new trick"
@@ -83,20 +72,20 @@
         "id": "bug_hunter_spider_1753404040_5672",
         "name": "Mysterious Bug Hunter Spider",
         "species": "bug_hunter_spider",
-        "age": 3.9915559666094547,
-        "health": 108.79407250815446,
-        "energy": 74,
+        "age": 4.241555966609455,
+        "health": 100,
+        "energy": 79,
         "generation": 1,
         "birth_date": "2025-07-25T00:40:40.134351",
-        "recent_event": "learned a new algorithm"
+        "recent_event": "experienced a moment of pure digital enlightenment"
       },
       {
         "id": "code_butterfly_1753404111_1732",
         "name": "Wandering Code Butterfly",
         "species": "code_butterfly",
-        "age": 2.884780369970632,
-        "health": 106.51554074302496,
-        "energy": 73,
+        "age": 3.134780369970632,
+        "health": 103.08696931445353,
+        "energy": 71,
         "generation": 1,
         "birth_date": "2025-07-25T00:41:51.718799",
         "recent_event": "found a hidden treasure in the repository depths"
@@ -105,20 +94,20 @@
         "id": "bug_hunter_spider_1753417286_4988",
         "name": "Wild Bug Hunter Spider",
         "species": "bug_hunter_spider",
-        "age": 2.836225841909775,
-        "health": 109.195330126058,
-        "energy": 70,
+        "age": 3.086225841909775,
+        "health": 100,
+        "energy": 82,
         "generation": 1,
         "birth_date": "2025-07-25T04:21:26.557644",
-        "recent_event": "discovered a hidden bug"
+        "recent_event": "experienced a moment of pure digital enlightenment"
       },
       {
         "id": "code_butterfly_1753431031_8187",
         "name": "Mysterious Code Butterfly",
         "species": "code_butterfly",
-        "age": 1.853569110852023,
-        "health": 125.40817650941702,
-        "energy": 86,
+        "age": 2.103569110852023,
+        "health": 121.97960508084559,
+        "energy": 84,
         "generation": 1,
         "birth_date": "2025-07-25T08:10:31.304910",
         "recent_event": "found a cozy spot in the docs folder"
@@ -127,12 +116,24 @@
         "id": "code_butterfly_1753431996_4261",
         "name": "Wild Code Butterfly",
         "species": "code_butterfly",
-        "age": 0.9386371769341121,
-        "health": 126.63635898894793,
-        "energy": 82,
+        "age": 1.1886371769341122,
+        "health": 123.2077875603765,
+        "energy": 80,
         "generation": 1,
         "birth_date": "2025-07-25T08:26:36.056518",
         "recent_event": "found a hidden treasure in the repository depths"
+      },
+      {
+        "id": "code_butterfly_1753452510_9351",
+        "name": "Young Wandering Code Butterfly",
+        "species": "code_butterfly",
+        "age": 0,
+        "health": 100,
+        "energy": 100,
+        "parent_id": "code_butterfly_1753397153_5909",
+        "generation": 2,
+        "birth_date": "2025-07-25T14:08:30.927538",
+        "recent_event": "experienced a moment of pure digital enlightenment"
       }
     ],
     "generation": 1,
@@ -170,6 +171,13 @@
         "type": "spontaneous_event",
         "description": "The digital seasons are changing, affecting all creatures \ud83c\udf42",
         "affected_creatures": 3,
+        "trigger": "autonomous_ecosystem"
+      },
+      {
+        "timestamp": "2025-07-25T14:08:30.927596",
+        "type": "spontaneous_event",
+        "description": "The digital seasons are changing, affecting all creatures \ud83c\udf42",
+        "affected_creatures": 5,
         "trigger": "autonomous_ecosystem"
       }
     ]
@@ -261,24 +269,27 @@
     }
   },
   "historical_events": [],
-  "family_relationships": {},
+  "family_relationships": {
+    "code_butterfly_1753397153_5909": [
+      "code_butterfly_1753452510_9351"
+    ]
+  },
   "ecosystem_metrics": {
     "total_population": 12,
-    "species_diversity": 4,
+    "species_diversity": 3,
     "dominant_species": [
       "code_butterfly",
-      5
+      6
     ],
-    "average_age": 4.58,
-    "average_health": 95.91,
-    "average_energy": 71.33,
-    "oldest_creature_age": 7.587716265176215,
-    "youngest_creature_age": 0.9386371769341121,
-    "current_generation": 1,
-    "genetic_diversity": 1,
+    "average_age": 4.25,
+    "average_health": 100.03,
+    "average_energy": 76.08,
+    "oldest_creature_age": 7.837716265176215,
+    "youngest_creature_age": 0,
+    "current_generation": 2,
+    "genetic_diversity": 2,
     "species_distribution": {
-      "code_butterfly": 5,
-      "quantum_firefly": 1,
+      "code_butterfly": 6,
       "logic_lynx": 2,
       "bug_hunter_spider": 4
     }
