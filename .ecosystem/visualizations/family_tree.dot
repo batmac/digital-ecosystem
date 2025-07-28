@@ -8,126 +8,126 @@ digraph EcosystemFamilyTree {
     node [fillcolor="#E3F2FD"];
 
         "logic_lynx_1753394863_7694" [
-            label="🐱 Wild Logic Lynx\nGen 1\nAge: 18.6d",
+            label="🐱 Wild Logic Lynx\nGen 1\nAge: 18.9d",
             fillcolor="#FFCDD2",
             color="#FF9800",
             penwidth=2
         ];
     
         "bug_hunter_spider_1753401059_2910" [
-            label="🕷️ Wild Bug Hunter Spider\nGen 1\nAge: 17.4d",
+            label="🕷️ Wild Bug Hunter Spider\nGen 1\nAge: 17.6d",
             fillcolor="#FFCDD2",
             color="#FF9800",
             penwidth=2
         ];
     
         "logic_lynx_1753403721_9188" [
-            label="🐱 Mysterious Logic Lynx\nGen 1\nAge: 16.8d",
+            label="🐱 Mysterious Logic Lynx\nGen 1\nAge: 17.1d",
             fillcolor="#FFCDD2",
             color="#F44336",
             penwidth=2
         ];
     
         "bug_hunter_spider_1753404040_5672" [
-            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 16.5d",
+            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 16.7d",
             fillcolor="#FFCDD2",
             color="#F44336",
             penwidth=2
         ];
     
         "bug_hunter_spider_1753417286_4988" [
-            label="🕷️ Wild Bug Hunter Spider\nGen 1\nAge: 15.3d",
+            label="🕷️ Wild Bug Hunter Spider\nGen 1\nAge: 15.6d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753431996_4261" [
-            label="🦋 Wild Code Butterfly\nGen 1\nAge: 13.4d",
+            label="🦋 Wild Code Butterfly\nGen 1\nAge: 13.7d",
             fillcolor="#FFCDD2",
             color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1753452510_9351" [
-            label="🦋 Young Wandering Code Butterfly\nGen 2\nAge: 12.2d",
+            label="🦋 Young Wandering Code Butterfly\nGen 2\nAge: 12.5d",
             fillcolor="#F8BBD9",
             color="#FF9800",
             penwidth=2
         ];
     
         "memory_whale_1753460772_9323" [
-            label="🐋 Mysterious Memory Whale\nGen 1\nAge: 13.1d",
+            label="🐋 Mysterious Memory Whale\nGen 1\nAge: 13.3d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753474087_7853" [
-            label="🦋 Young Wandering Code Butterfly\nGen 2\nAge: 11.2d",
+            label="🦋 Young Wandering Code Butterfly\nGen 2\nAge: 11.5d",
             fillcolor="#F8BBD9",
-            color="#FF9800",
+            color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753475150_9691" [
-            label="🦋 Wandering Code Butterfly\nGen 1\nAge: 11.3d",
+            label="🦋 Wandering Code Butterfly\nGen 1\nAge: 11.5d",
             fillcolor="#FFCDD2",
-            color="#F44336",
+            color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1753546068_6381" [
-            label="🦋 Mini Wild Code Butterfly\nGen 2\nAge: 7.5d",
+            label="🦋 Mini Wild Code Butterfly\nGen 2\nAge: 7.8d",
             fillcolor="#F8BBD9",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753560457_3871" [
-            label="🦋 Little Young Wandering Code Butterfly\nGen 3\nAge: 6.8d",
+            label="🦋 Little Young Wandering Code Butterfly\nGen 3\nAge: 7.0d",
             fillcolor="#E1BEE7",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753576735_2891" [
-            label="🦋 Mini Wandering Code Butterfly\nGen 2\nAge: 6.0d",
+            label="🦋 Mini Wandering Code Butterfly\nGen 2\nAge: 6.2d",
             fillcolor="#F8BBD9",
             color="#4CAF50",
             penwidth=2
         ];
     
         "data_dragon_1753590765_6481" [
-            label="🐉 Wild Data Dragon\nGen 1\nAge: 11.7d",
+            label="🐉 Wild Data Dragon\nGen 1\nAge: 12.0d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753619249_9190" [
-            label="🦋 Ancient Code Butterfly\nGen 1\nAge: 4.5d",
+            label="🦋 Ancient Code Butterfly\nGen 1\nAge: 4.8d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
     
         "bug_hunter_spider_1753633565_7332" [
-            label="🕷️ Mini Wild Bug Hunter Spider\nGen 2\nAge: 2.8d",
+            label="🕷️ Mini Wild Bug Hunter Spider\nGen 2\nAge: 3.0d",
             fillcolor="#F8BBD9",
             color="#4CAF50",
             penwidth=2
         ];
     
         "bug_hunter_spider_1753646869_7742" [
-            label="🕷️ Young Wild Bug Hunter Spider\nGen 2\nAge: 2.2d",
+            label="🕷️ Young Wild Bug Hunter Spider\nGen 2\nAge: 2.5d",
             fillcolor="#F8BBD9",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1753677231_8397" [
-            label="🦋 Baby Young Wandering Code Butterfly\nGen 3\nAge: 0.5d",
+            label="🦋 Baby Young Wandering Code Butterfly\nGen 3\nAge: 0.8d",
             fillcolor="#E1BEE7",
             color="#4CAF50",
             penwidth=2
