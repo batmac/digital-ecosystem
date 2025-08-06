@@ -1,7 +1,7 @@
 {
-  "total_population": 30,
+  "total_population": 32,
   "deaths": 1,
-  "births": 0,
+  "births": 3,
   "activity": "medium",
   "generation": 1
 }
