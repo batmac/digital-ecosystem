@@ -7,111 +7,111 @@ digraph EcosystemFamilyTree {
     // Style pour différentes générations
     node [fillcolor="#E3F2FD"];
 
-        "data_dragon_1754122164_6643" [
-            label="🐉 Mysterious Data Dragon\nGen 1\nAge: 56.8d",
-            fillcolor="#FFCDD2",
-            color="#F44336",
-            penwidth=2
-        ];
-    
         "data_dragon_1754354598_7855" [
-            label="🐉 Ancient Data Dragon\nGen 1\nAge: 44.3d",
+            label="🐉 Ancient Data Dragon\nGen 1\nAge: 44.5d",
             fillcolor="#FFCDD2",
             color="#F44336",
             penwidth=2
         ];
     
         "data_dragon_1754381464_8108" [
-            label="🐉 Ancient Data Dragon\nGen 1\nAge: 40.5d",
+            label="🐉 Ancient Data Dragon\nGen 1\nAge: 40.7d",
             fillcolor="#FFCDD2",
             color="#F44336",
             penwidth=2
         ];
     
         "bug_hunter_spider_1754914433_4406" [
-            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 14.0d",
+            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 14.2d",
             fillcolor="#FFCDD2",
             color="#FF9800",
             penwidth=2
         ];
     
         "bug_hunter_spider_1754921313_6350" [
-            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 12.0d",
+            label="🕷️ Mysterious Bug Hunter Spider\nGen 1\nAge: 12.3d",
             fillcolor="#FFCDD2",
             color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1754929587_3006" [
-            label="🦋 Little Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 11.2d",
+            label="🦋 Little Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 11.5d",
             fillcolor="#BBDEFB",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1754950028_7417" [
-            label="🦋 Mini Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 13\nAge: 10.2d",
+            label="🦋 Mini Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 13\nAge: 10.5d",
             fillcolor="#BBDEFB",
             color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1754979076_8431" [
-            label="🦋 Baby Little Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 8.8d",
+            label="🦋 Baby Little Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 9.0d",
             fillcolor="#BBDEFB",
-            color="#4CAF50",
+            color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1754987190_7049" [
-            label="🦋 Little Baby Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 8.2d",
+            label="🦋 Little Baby Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 8.5d",
             fillcolor="#BBDEFB",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1754987190_8883" [
-            label="🦋 Mini Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 8.2d",
+            label="🦋 Mini Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 8.5d",
             fillcolor="#BBDEFB",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1755014927_7790" [
-            label="🦋 Baby Little Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 7.0d",
+            label="🦋 Baby Little Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 7.2d",
             fillcolor="#BBDEFB",
-            color="#4CAF50",
+            color="#FF9800",
             penwidth=2
         ];
     
         "code_butterfly_1755045613_5361" [
-            label="🦋 Baby Mini Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 5.2d",
+            label="🦋 Baby Mini Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 14\nAge: 5.5d",
             fillcolor="#BBDEFB",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1755102347_6916" [
-            label="🦋 Little Mini Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 15\nAge: 2.2d",
+            label="🦋 Little Mini Baby Little Baby Little Little Young Mini Little Little Little Little Young Wandering Code Butterfly\nGen 15\nAge: 2.5d",
             fillcolor="#BBDEFB",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1755139260_5805" [
-            label="🦋 Ancient Code Butterfly\nGen 1\nAge: 0.7d",
+            label="🦋 Ancient Code Butterfly\nGen 1\nAge: 1.0d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
     
         "code_butterfly_1755145664_9814" [
-            label="🦋 Wandering Code Butterfly\nGen 1\nAge: 0.9d",
+            label="🦋 Wandering Code Butterfly\nGen 1\nAge: 1.1d",
             fillcolor="#FFCDD2",
             color="#4CAF50",
             penwidth=2
         ];
-        "code_butterfly_1754950028_7417" -> "code_butterfly_1755045613_5361" [label="parent of"];\n    "code_butterfly_1754987190_8883" -> "code_butterfly_1755102347_6916" [label="parent of"];\n
+    
+        "code_butterfly_1755151873_3161" [
+            label="🦋 Baby Baby Mini Baby Young Baby Young Little Young Little Little Little Little Young Wandering Code Butterfly\nGen 15\nAge: 0.0d",
+            fillcolor="#BBDEFB",
+            color="#4CAF50",
+            penwidth=2
+        ];
+        "code_butterfly_1754950028_7417" -> "code_butterfly_1755045613_5361" [label="parent of"];\n    "code_butterfly_1754987190_8883" -> "code_butterfly_1755102347_6916" [label="parent of"];\n    "code_butterfly_1755045613_5361" -> "code_butterfly_1755151873_3161" [label="parent of"];\n
     
     // Légende
     subgraph cluster_legend {
